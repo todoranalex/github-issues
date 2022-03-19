@@ -19,7 +19,7 @@ type Issue = {
     color: string;
   }[];
   updated_at: string;
-  comments: string;
+  comments: number;
 };
 
 type State = {
@@ -57,6 +57,9 @@ const reducer = (state: State, action: Action): State => {
     }
   }
 };
+// const a: FetchIssuesParameters = {
+//   assignee
+// };
 
 export function useGithubbIssues(page: number) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -70,19 +73,21 @@ export function useGithubbIssues(page: number) {
           payload: [],
           error: undefined,
         });
-        const data = await octokitClient.rest.issues.listForRepo({
-          owner: 'facebook',
-          per_page: 20,
-          repo: 'react-native',
-          page,
-        });
-        console.log(data);
-        const filtered = data.data
-          .filter(d => !d.pull_request)
-          .map(f => f as Issue);
+        // const data = await octokitClient.rest.issues.listForRepo({
+        //   owner: 'facebook',
+        //   per_page: 20,
+        //   repo: 'react-native',
+        //   // state: filter,
+        //   page,
+        // });
+
+        // console.log(data);
+        // const filtered = data.data
+        //   .filter(d => !d.pull_request)
+        //   .map(f => f as Issue);
         dispatch({
           type: 'success',
-          payload: filtered,
+          payload: [],
           error: undefined,
         });
       } catch (e) {

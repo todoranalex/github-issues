@@ -1,161 +1,174 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
+import {Theme, useNavigation, useTheme} from '@react-navigation/native';
+import React, {FunctionComponent, useState} from 'react';
 import {
-  ActivityIndicator,
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
   TouchableOpacity,
   useWindowDimensions,
+  View,
 } from 'react-native';
-import {FlatList, Text, View} from 'react-native';
-import {useGithubbIssues} from '../hooks';
 import GithubIcon from 'react-native-vector-icons/Octicons';
 
-const issueIcons = {
-  open: 'issue-opened',
-  closed: 'issue-closed',
-};
-
 export default () => {
-  const navigation = useNavigation();
-  const [page, setPage] = useState(1);
-  const {state} = useGithubbIssues(page);
-  const {width} = useWindowDimensions();
   const theme = useTheme();
+  const navigation = useNavigation();
+  const {height, width} = useWindowDimensions();
+  const [githubDetails, setGithubDetails] = useState<{
+    repository: string;
+    organization: string;
+  }>({
+    repository: '',
+    organization: '',
+  });
 
-  return state.isLoading && page === 1 ? (
-    <ActivityIndicator
-      size={24}
-      color={'white'}
-      style={{flex: 1, backgroundColor: theme.colors.background}}
-    />
-  ) : (
-    <View style={{flex: 1, paddingTop: 48}}>
-      <FlatList
-        bounces={false}
-        onEndReachedThreshold={1}
-        ListFooterComponent={() => {
-          if (page > 1 && state.isLoading) {
-            return (
-              <ActivityIndicator
-                color="white"
-                style={{
-                  paddingVertical: 48,
-                }}
-              />
-            );
-          } else {
-            return <React.Fragment />;
-          }
-        }}
-        onEndReached={() => {
-          setPage(page + 1);
-        }}
-        style={{
-          flex: 1,
+  return (
+    // <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
+    // <ScrollView>
+    <View style={styles.container}>
+      <GithubIcon name="mark-github" color={theme.colors.primary} size={128} />
+      <Text style={{color: theme.colors.primary, ...styles.subtitle}}>
+        Your GitHub issues fetcher app
+      </Text>
+      <View style={{width: width - 128}}>
+        <Input
+          label={'Organization'}
+          value={githubDetails.organization}
+          placeholder={'Insert organization here'}
+          onChangeText={organization => {
+            setGithubDetails(state => {
+              return {...state, organization};
+            });
+          }}
+        />
+        <Input
+          label={'Repository'}
+          value={githubDetails.repository}
+          placeholder={'Insert repository here'}
+          onChangeText={repository => {
+            setGithubDetails(state => {
+              return {...state, repository};
+            });
+          }}
+        />
 
-          backgroundColor: theme.colors.background,
-        }}
-        data={state.issues}
-        keyExtractor={item => `${item.title} - ${item.number}`}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Details');
-              }}
-              activeOpacity={0.84}
-              key={`${item.title} - ${item.number}`}
-              style={{
-                paddingTop: 24,
-              }}>
-              <View
-                style={{
-                  paddingHorizontal: 8,
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <GithubIcon
-                  name="issue-opened"
-                  size={24}
-                  color={'green'}
-                  style={{
-                    marginRight: 8,
-                  }}
-                />
-                <View style={{flex: 1}}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      opacity: 0.5,
-                      marginBottom: 8,
-                      fontSize: 14,
-                      fontWeight: '500',
-                    }}>
-                    facebook / react-native #{item.number}
-                  </Text>
-                  <Text
-                    numberOfLines={2}
-                    style={{
-                      color: 'white',
-                      fontSize: 16,
-                      fontWeight: '500',
-                    }}>
-                    {item.title}
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flexWrap: 'wrap',
-                      marginTop: 8,
-                    }}>
-                    {item.labels.map((label, i) => {
-                      return (
-                        <View
-                          key={label.id}
-                          style={{
-                            borderRadius: 50,
-                            marginRight: 4,
-                            marginBottom: 4,
-                            paddingVertical: 2,
-                            paddingHorizontal: 8,
-                            alignSelf: 'baseline',
-                            backgroundColor: `#${label.color}`,
-                          }}>
-                          <Text style={{color: 'black'}}>{label.name}</Text>
-                        </View>
-                      );
-                    })}
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignSelf: 'baseline',
-                      alignItems: 'center',
-                      backgroundColor: 'black', //TODO: add correct color
-                    }}>
-                    <GithubIcon name="comment" color={'gray'}></GithubIcon>
-                    <Text style={{color: 'gray', marginLeft: 3}}>
-                      {item.comments}
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color: 'white', opacity: 0.5}}>
-                  {item.updated_at.slice(0, 4)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  height: 1,
-                  opacity: 0.3,
-                  backgroundColor: 'gray',
-                  width,
-                  marginTop: 24,
-                }}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+        <Button
+          text={'Fetch Issues'}
+          icon={'rocket'}
+          onPress={() => {
+            const {repository, organization} = githubDetails;
+            if (repository.length > 0 && organization.length > 0) {
+              navigation.navigate('Issues', githubDetails);
+            } else {
+              Alert.alert(
+                'Error',
+                'Please input an organization and a repository',
+              );
+            }
+          }}
+        />
+        <Button
+          text={'Bookmarks'}
+          icon={'bookmark'}
+          onPress={() => {
+            navigation.navigate('Bookmarks', {});
+          }}
+        />
+      </View>
     </View>
+    // </ScrollView>
+    // </KeyboardAvoidingView>
   );
 };
+
+const Input: FunctionComponent<{
+  label: string;
+  value: string;
+  placeholder: string;
+  onChangeText(value: string): void;
+}> = ({label, value, placeholder, onChangeText}): JSX.Element => {
+  const theme = useTheme();
+  return (
+    <React.Fragment>
+      <Text style={{color: theme.colors.primary, ...styles.textInputInfo}}>
+        {label}
+      </Text>
+      <TextInput
+        onChangeText={text => {
+          onChangeText(text);
+        }}
+        keyboardAppearance="dark"
+        style={{
+          ...styles.textInput,
+          borderColor: theme.colors.primary,
+          color: theme.colors.primary,
+        }}
+        placeholderTextColor={theme.colors.text}
+        placeholder={placeholder}
+        value={value}
+      />
+    </React.Fragment>
+  );
+};
+
+const Button: FunctionComponent<{
+  text: string;
+  icon?: string;
+  onPress(): void;
+}> = ({text, icon, onPress}) => {
+  const theme = useTheme();
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        ...styles.button,
+        borderColor: theme.colors.primary,
+      }}>
+      <View style={styles.buttonInnerContainer}>
+        <Text style={{...styles.buttonText, color: theme.colors.primary}}>
+          {text}
+        </Text>
+        {icon && (
+          <GithubIcon name={icon} size={24} color={theme.colors.primary} />
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  subtitle: {
+    marginTop: 24,
+    marginBottom: 16,
+  },
+  textInputInfo: {
+    marginBottom: 8,
+  },
+  textInput: {
+    borderWidth: 1,
+    height: 48,
+    marginBottom: 16,
+    paddingLeft: 8,
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    height: 48,
+    marginBottom: 8,
+  },
+  buttonInnerContainer: {flexDirection: 'row', paddingHorizontal: 48},
+  buttonText: {
+    fontSize: 20,
+    marginRight: 8,
+  },
+});
