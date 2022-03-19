@@ -4,11 +4,12 @@ import {Octokit} from '@octokit/rest';
 
 const initialState: State = {
   issues: [],
+  filter: 'open',
   isLoading: true,
   error: undefined,
 };
 
-type Issue = {
+export type Issue = {
   title: string;
   state: string;
   number: number;
@@ -24,12 +25,14 @@ type Issue = {
 
 type State = {
   issues: Issue[];
+  filter: Filter;
   isLoading: boolean;
   error: any;
 };
 
 type Action = {
   type: 'fetch' | 'success' | 'error';
+  filter: Filter;
   payload: Issue[];
   error: any;
 };
@@ -40,16 +43,19 @@ type FetchIssuesResponse =
   Endpoints['GET /repos/{owner}/{repo}/issues']['response'];
 
 const reducer = (state: State, action: Action): State => {
-  const {type, payload, error} = action;
+  console.log('DISPATCHED', state, action);
+  const {type, payload, filter, error} = action;
   switch (type) {
     case 'fetch': {
       return {...state, isLoading: true};
     }
     case 'success': {
+      const newFilter = state.filter !== filter;
       return {
         ...state,
+        filter,
         isLoading: false,
-        issues: [...state.issues, ...payload],
+        issues: newFilter ? [...payload] : [...state.issues, ...payload],
       };
     }
     case 'error': {
@@ -57,12 +63,19 @@ const reducer = (state: State, action: Action): State => {
     }
   }
 };
-// const a: FetchIssuesParameters = {
-//   assignee
-// };
 
-export function useGithubbIssues(page: number) {
+export type Filter = 'all' | 'closed' | 'open';
+
+type Configuration = {
+  page: number;
+  filter: Filter;
+  organization: string;
+  repository: string;
+};
+
+export function useGithubbIssues(configuration: Configuration) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const {page, filter, organization, repository} = configuration;
   const octokitClient = useRef(new Octokit()).current;
 
   useEffect(() => {
@@ -71,35 +84,35 @@ export function useGithubbIssues(page: number) {
         dispatch({
           type: 'fetch',
           payload: [],
+          filter,
           error: undefined,
         });
-        // const data = await octokitClient.rest.issues.listForRepo({
-        //   owner: 'facebook',
-        //   per_page: 20,
-        //   repo: 'react-native',
-        //   // state: filter,
-        //   page,
-        // });
-
-        // console.log(data);
-        // const filtered = data.data
-        //   .filter(d => !d.pull_request)
-        //   .map(f => f as Issue);
+        const data = await octokitClient.rest.issues.listForRepo({
+          owner: organization,
+          per_page: 20,
+          repo: repository,
+          state: filter,
+          page,
+        });
+        const filtered = data.data
+          .filter(d => !d.pull_request)
+          .map(f => f as Issue);
         dispatch({
           type: 'success',
-          payload: [],
+          payload: filtered,
+          filter,
           error: undefined,
         });
       } catch (e) {
         dispatch({
           type: 'error',
           payload: [],
+          filter,
           error: e,
         });
       }
     };
     getIssues();
-  }, [page]);
-
-  return {state};
+  }, [page, filter]);
+  return state;
 }

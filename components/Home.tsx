@@ -1,10 +1,7 @@
-import {Theme, useNavigation, useTheme} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React, {FunctionComponent, useState} from 'react';
 import {
   Alert,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -62,7 +59,10 @@ export default () => {
           onPress={() => {
             const {repository, organization} = githubDetails;
             if (repository.length > 0 && organization.length > 0) {
-              navigation.navigate('Issues', githubDetails);
+              navigation.navigate('Issues', {
+                organization: organization.toLowerCase(),
+                repository: repository.toLowerCase(),
+              });
             } else {
               Alert.alert(
                 'Error',
