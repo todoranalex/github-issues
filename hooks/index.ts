@@ -1,41 +1,59 @@
-import { useEffect, useReducer, useRef } from "react";
-import { Endpoints } from "@octokit/types";
-import { Octokit } from "@octokit/rest";
+import {useEffect, useReducer, useRef} from 'react';
+import {Endpoints} from '@octokit/types';
+import {Octokit} from '@octokit/rest';
 
 const initialState: State = {
-  data: null,
+  issues: [],
   isLoading: true,
   error: undefined,
 };
 
+type Issue = {
+  title: string;
+  state: string;
+  number: number;
+  labels: {
+    id: number;
+    name: string;
+    description: string;
+    color: string;
+  }[];
+  updated_at: string;
+  comments: string;
+};
+
 type State = {
-  data: FetchIssuesResponse;
+  issues: Issue[];
   isLoading: boolean;
   error: any;
 };
 
 type Action = {
-  type: "fetch" | "success" | "error";
-  payload: FetchIssuesResponse;
+  type: 'fetch' | 'success' | 'error';
+  payload: Issue[];
   error: any;
 };
 
 type FetchIssuesParameters =
-  Endpoints["GET /repos/{owner}/{repo}/issues"]["parameters"];
+  Endpoints['GET /repos/{owner}/{repo}/issues']['parameters'];
 type FetchIssuesResponse =
-  Endpoints["GET /repos/{owner}/{repo}/issues"]["response"];
+  Endpoints['GET /repos/{owner}/{repo}/issues']['response'];
 
-const reducer = (state: State, action: Action) => {
-  const { type, payload, error } = action;
+const reducer = (state: State, action: Action): State => {
+  const {type, payload, error} = action;
   switch (type) {
-    case "fetch": {
-      return { ...state, isLoading: true };
+    case 'fetch': {
+      return {...state, isLoading: true};
     }
-    case "success": {
-      return { ...state, isLoading: false, data: payload };
+    case 'success': {
+      return {
+        ...state,
+        isLoading: false,
+        issues: [...state.issues, ...payload],
+      };
     }
-    case "error": {
-      return { ...state, isLoading: false, error };
+    case 'error': {
+      return {...state, isLoading: false, error};
     }
   }
 };
@@ -47,23 +65,30 @@ export function useGithubbIssues(page: number) {
   useEffect(() => {
     const getIssues = async () => {
       try {
+        dispatch({
+          type: 'fetch',
+          payload: [],
+          error: undefined,
+        });
         const data = await octokitClient.rest.issues.listForRepo({
-          owner: "facebook",
+          owner: 'facebook',
           per_page: 20,
-          repo: "react-native",
+          repo: 'react-native',
           page,
         });
         console.log(data);
-        const filtered = data.data.filter((d) => !d.pull_request);
+        const filtered = data.data
+          .filter(d => !d.pull_request)
+          .map(f => f as Issue);
         dispatch({
-          type: "success",
-          payload: data,
+          type: 'success',
+          payload: filtered,
           error: undefined,
         });
       } catch (e) {
         dispatch({
-          type: "error",
-          payload: null,
+          type: 'error',
+          payload: [],
           error: e,
         });
       }
@@ -71,5 +96,5 @@ export function useGithubbIssues(page: number) {
     getIssues();
   }, [page]);
 
-  return { state };
+  return {state};
 }

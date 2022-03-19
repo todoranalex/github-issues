@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "@octokit/rest": "^18.12.0",
+    "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "octokit": "^1.7.1",
     "react": "17.0.2",
     "react-native": "0.67.4",
     "react-native-safe-area-context": "^4.2.1",
-    "react-native-screens": "^3.13.1"
+    "react-native-screens": "^3.13.1",
+    "react-native-vector-icons": "^9.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -26,6 +28,7 @@
     "@types/jest": "^27.4.1",
     "@types/react": "^17.0.40",
     "@types/react-native": "^0.67.3",
+    "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^17.0.1",
     "babel-jest": "^26.6.3",
     "eslint": "7.14.0",
