@@ -76,7 +76,9 @@ type Configuration = {
 export function useGithubbIssues(configuration: Configuration) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const {page, filter, organization, repository} = configuration;
-  const octokitClient = useRef(new Octokit()).current;
+  const octokitClient = useRef(
+    new Octokit({auth: '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'}),
+  ).current;
 
   useEffect(() => {
     const getIssues = async () => {
@@ -89,7 +91,7 @@ export function useGithubbIssues(configuration: Configuration) {
         });
         const data = await octokitClient.rest.issues.listForRepo({
           owner: organization,
-          per_page: 20,
+          per_page: 10,
           repo: repository,
           state: filter,
           page,

@@ -7,7 +7,6 @@ import {
 import React, {FunctionComponent, useRef, useState} from 'react';
 import {
   ActivityIndicator,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
@@ -17,6 +16,7 @@ import {Filter, Issue, useGithubbIssues} from '../hooks';
 import GithubIcon from 'react-native-vector-icons/Octicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationParamList} from './App';
+import {Button} from './Home';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
 
@@ -35,17 +35,20 @@ export default () => {
   const theme = useTheme();
   const {organization, repository} = useRoute<IssuesRouteProps>().params;
   const filters = useRef(['open', 'closed', 'all'] as Filter[]).current;
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState<Filter>('open');
+  const [configuration, setConfiguration] = useState<{
+    filter: Filter;
+    page: number;
+  }>({
+    filter: 'open',
+    page: 1,
+  });
   const {issues, isLoading, error} = useGithubbIssues({
-    page,
-    filter,
+    ...configuration,
     organization,
     repository,
   });
   return (
     <React.Fragment>
-      {/* <Toolbar /> */}
       <Text style={{marginLeft: 24, marginBottom: 8, color: theme.colors.text}}>
         {organization}
       </Text>
@@ -59,14 +62,17 @@ export default () => {
             <FilterItem
               value={value}
               onActivate={() => {
-                setFilter(value);
+                setConfiguration({
+                  page: 1,
+                  filter: value,
+                });
               }}
-              isActive={value === filter}
+              isActive={value === configuration.filter}
             />
           );
         })}
       </View>
-      {isLoading && page === 1 ? (
+      {isLoading && configuration.page === 1 ? (
         <ActivityIndicator
           size={24}
           color={theme.colors.primary}
@@ -83,9 +89,41 @@ export default () => {
             <FlatList
               bounces={false}
               onEndReachedThreshold={200}
-              onEndReached={() => {
-                setPage(page + 1);
+              ListFooterComponent={() => {
+                return (
+                  <View style={{marginHorizontal: 64, paddingVertical: 24}}>
+                    {isLoading ? (
+                      <ActivityIndicator
+                        size={24}
+                        color={theme.colors.primary}
+                        style={{
+                          height: 64,
+                          flex: 1,
+                          backgroundColor: theme.colors.background,
+                        }}
+                      />
+                    ) : (
+                      <Button
+                        borderColor={theme.colors.text}
+                        text="Load more"
+                        onPress={() => {
+                          setConfiguration({
+                            ...configuration,
+                            page: configuration.page + 1,
+                          });
+                        }}
+                      />
+                    )}
+                  </View>
+                );
               }}
+              // onEndReached={() => {
+              //   console.log('triggered...')
+              //   setConfiguration({
+              //     ...configuration,
+              //     page: configuration.page + 1,
+              //   });
+              // }}
               style={styles.container}
               data={issues}
               keyExtractor={item => `${item.title} - ${item.number}`}

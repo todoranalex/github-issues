@@ -115,18 +115,19 @@ const Input: FunctionComponent<{
   );
 };
 
-const Button: FunctionComponent<{
+export const Button: FunctionComponent<{
   text: string;
   icon?: string;
+  borderColor?: string;
   onPress(): void;
-}> = ({text, icon, onPress}) => {
+}> = ({text, icon, borderColor, onPress}) => {
   const theme = useTheme();
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{
         ...styles.button,
-        borderColor: theme.colors.primary,
+        borderColor: borderColor ?? theme.colors.primary,
       }}>
       <View style={styles.buttonInnerContainer}>
         <Text style={{...styles.buttonText, color: theme.colors.primary}}>
