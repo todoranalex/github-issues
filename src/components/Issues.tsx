@@ -4,7 +4,7 @@ import {
   useRoute,
   useTheme,
 } from '@react-navigation/native';
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect, useReducer, useRef} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -12,11 +12,17 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {FlatList, Text, View} from 'react-native';
-import {Filter, Issue, useGithubbIssues} from '../reducers/issuesReducer';
+import issuesReducer, {
+  Filter,
+  initialState,
+  Issue,
+} from '../reducers/issuesReducer';
 import GithubIcon from 'react-native-vector-icons/Octicons';
 import {NavigationParamList} from './App';
 import {Button} from './Home';
 import useBookmark from '../hooks/useBookmark';
+import {Octokit} from '@octokit/rest';
+import issueService from '../services/IssueService';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
 
@@ -34,7 +40,40 @@ const issueIcons = {
 export default () => {
   const theme = useTheme();
   const {organization, repository} = useRoute<IssuesRouteProps>().params;
-  const {state, dispatch} = useGithubbIssues(repository, organization);
+  const [state, dispatch] = useReducer(issuesReducer, {
+    ...initialState,
+    repo: repository,
+    org: organization,
+  });
+  const {org, repo, filter, page, issuesPerPage} = state;
+
+  useEffect(() => {
+    const getIssues = async () => {
+      try {
+        const issues = await issueService.getIssues(
+          repo,
+          org,
+          issuesPerPage,
+          filter,
+          page,
+        );
+        dispatch({
+          type: 'fetch-success',
+          payload: {
+            issues,
+          },
+        });
+      } catch (error) {
+        dispatch({
+          type: 'error',
+          payload: {
+            error,
+          },
+        });
+      }
+    };
+    getIssues();
+  }, [state.page, state.filter]);
 
   return (
     <React.Fragment>

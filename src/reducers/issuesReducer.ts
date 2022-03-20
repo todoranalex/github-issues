@@ -1,7 +1,3 @@
-import {useEffect, useReducer, useRef} from 'react';
-import {Octokit} from '@octokit/rest';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export type Issue = {
   title: string;
   state: string;
@@ -20,7 +16,7 @@ export type Issue = {
 
 export type Filter = 'all' | 'closed' | 'open';
 
-const initialState: State = {
+export const initialState: State = {
   issues: [],
   org: '',
   repo: '',
@@ -67,7 +63,7 @@ type Action =
       };
     };
 
-const reducer = (state: State, action: Action): State => {
+const issuesReducer = (state: State, action: Action): State => {
   console.log('DISPATCHED', state, action);
   switch (action.type) {
     case 'fetch-success': {
@@ -95,53 +91,4 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-export function useGithubbIssues(repository: string, organization: string) {
-  const [state, dispatch] = useReducer(reducer, {
-    ...initialState,
-    repo: repository,
-    org: organization,
-  });
-  // auth: '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'
-  const octokitClient = useRef(new Octokit()).current;
-  const {org, repo, filter, page, issuesPerPage} = state;
-
-  useEffect(() => {
-    const getIssues = async () => {
-      try {
-        const data = await octokitClient.rest.issues.listForRepo({
-          owner: org,
-          repo: repo,
-          per_page: issuesPerPage,
-          state: filter,
-          page: page,
-        });
-        console.log(data);
-        const issues = data.data
-          .filter(d => !d.pull_request) // filter pull requests
-          .map(f => {
-            return {
-              ...f,
-              org: organization,
-              repo: repository,
-            } as Issue;
-          });
-        dispatch({
-          type: 'fetch-success',
-          payload: {
-            issues,
-          },
-        });
-      } catch (error) {
-        dispatch({
-          type: 'error',
-          payload: {
-            error,
-          },
-        });
-      }
-    };
-    getIssues();
-  }, [state.page, state.filter]);
-
-  return {state, dispatch};
-}
+export default issuesReducer;
