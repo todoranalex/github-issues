@@ -1,12 +1,30 @@
 import {useEffect, useReducer, useRef} from 'react';
-import {Endpoints} from '@octokit/types';
 import {Octokit} from '@octokit/rest';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const initialState: State = {
-  issues: [],
-  filter: 'open',
-  isLoading: true,
-  error: undefined,
+const BOOKMARKS_KEY = 'bookmarksKey';
+
+export const getBookmarks = async (): Promise<Issue[]> => {
+  const raw = await AsyncStorage.getItem(BOOKMARKS_KEY);
+  return raw ? JSON.parse(raw) : [];
+};
+
+export const setBookmarks = (bookmarks: Issue[]): void => {
+  AsyncStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
+};
+
+export const handleBookmark = async (bookmark: Issue) => {
+  const bookmarks = await getBookmarks();
+  if (
+    !!bookmarks.find(
+      b => b.number === bookmark.number && b.updated_at === b.updated_at, //maybe check repo?
+    )
+  ) {
+    setBookmarks(bookmarks.filter(b => b.number !== bookmark.number));
+  } else {
+    bookmarks.push(bookmark);
+    setBookmarks(bookmarks);
+  }
 };
 
 export type Issue = {
@@ -23,98 +41,124 @@ export type Issue = {
   comments: number;
 };
 
+type Filter = 'all' | 'closed' | 'open';
+
+const initialState: State = {
+  issues: [],
+  org: '',
+  repo: '',
+  filter: 'open',
+  filters: ['open', 'closed', 'all'],
+  page: 1,
+  issuesPerPage: 20,
+  isLoading: true,
+  error: undefined,
+};
+
 type State = {
   issues: Issue[];
+  org: string;
+  repo: string;
   filter: Filter;
+  filters: Filter[];
+  issuesPerPage: number;
+  page: number;
   isLoading: boolean;
   error: any;
 };
 
-type Action = {
-  type: 'fetch' | 'success' | 'error';
-  filter: Filter;
-  payload: Issue[];
-  error: any;
-};
-
-type FetchIssuesParameters =
-  Endpoints['GET /repos/{owner}/{repo}/issues']['parameters'];
-type FetchIssuesResponse =
-  Endpoints['GET /repos/{owner}/{repo}/issues']['response'];
+type Action =
+  | {
+      type: 'fetch-next-page';
+    }
+  | {
+      type: 'filter';
+      payload: {
+        filter: Filter;
+      };
+    }
+  | {
+      type: 'fetch-success';
+      payload: {
+        issues: Issue[];
+      };
+    }
+  | {
+      type: 'error';
+      payload: {
+        error: any;
+      };
+    };
 
 const reducer = (state: State, action: Action): State => {
   console.log('DISPATCHED', state, action);
-  const {type, payload, filter, error} = action;
-  switch (type) {
-    case 'fetch': {
-      return {...state, isLoading: true};
-    }
-    case 'success': {
-      const newFilter = state.filter !== filter;
+  switch (action.type) {
+    case 'fetch-success': {
       return {
         ...state,
-        filter,
         isLoading: false,
-        issues: newFilter ? [...payload] : [...state.issues, ...payload],
+        issues: [...state.issues, ...action.payload.issues],
       };
     }
+    case 'filter': {
+      return {
+        ...state,
+        isLoading: true,
+        issues: [],
+        page: 1,
+        filter: action.payload.filter,
+      };
+    }
+    case 'fetch-next-page': {
+      return {...state, isLoading: true, page: state.page + 1};
+    }
     case 'error': {
-      return {...state, isLoading: false, error};
+      return {...state, isLoading: false, error: action.payload.error};
     }
   }
 };
 
-export type Filter = 'all' | 'closed' | 'open';
-
-type Configuration = {
-  page: number;
-  filter: Filter;
-  organization: string;
-  repository: string;
-};
-
-export function useGithubbIssues(configuration: Configuration) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const {page, filter, organization, repository} = configuration;
-  const octokitClient = useRef(
-    new Octokit({auth: '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'}),
-  ).current;
+export function useGithubbIssues(repository: string, organization: string) {
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    repo: repository,
+    org: organization,
+  });
+  // auth: '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'
+  const octokitClient = useRef(new Octokit()).current;
+  const {org, repo, filter, page, issuesPerPage} = state;
 
   useEffect(() => {
     const getIssues = async () => {
       try {
-        dispatch({
-          type: 'fetch',
-          payload: [],
-          filter,
-          error: undefined,
-        });
         const data = await octokitClient.rest.issues.listForRepo({
-          owner: organization,
-          per_page: 10,
-          repo: repository,
+          owner: org,
+          repo: repo,
+          per_page: issuesPerPage,
           state: filter,
-          page,
+          page: page,
         });
-        const filtered = data.data
-          .filter(d => !d.pull_request)
+        console.log(data);
+        const issues = data.data
+          .filter(d => !d.pull_request) // filter pull requests
           .map(f => f as Issue);
         dispatch({
-          type: 'success',
-          payload: filtered,
-          filter,
-          error: undefined,
+          type: 'fetch-success',
+          payload: {
+            issues,
+          },
         });
-      } catch (e) {
+      } catch (error) {
         dispatch({
           type: 'error',
-          payload: [],
-          filter,
-          error: e,
+          payload: {
+            error,
+          },
         });
       }
     };
     getIssues();
-  }, [page, filter]);
-  return state;
+  }, [state.page, state.filter]);
+
+  return {state, dispatch};
 }

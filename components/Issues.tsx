@@ -4,7 +4,7 @@ import {
   useRoute,
   useTheme,
 } from '@react-navigation/native';
-import React, {FunctionComponent, useRef, useState} from 'react';
+import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -12,9 +12,14 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {FlatList, Text, View} from 'react-native';
-import {Filter, Issue, useGithubbIssues} from '../hooks';
+import {
+  Filter,
+  getBookmarks,
+  handleBookmark,
+  Issue,
+  useGithubbIssues,
+} from '../hooks';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationParamList} from './App';
 import {Button} from './Home';
 
@@ -34,22 +39,11 @@ const issueIcons = {
 export default () => {
   const theme = useTheme();
   const {organization, repository} = useRoute<IssuesRouteProps>().params;
-  const filters = useRef(['open', 'closed', 'all'] as Filter[]).current;
-  const [configuration, setConfiguration] = useState<{
-    filter: Filter;
-    page: number;
-  }>({
-    filter: 'open',
-    page: 1,
-  });
-  const {issues, isLoading, error} = useGithubbIssues({
-    ...configuration,
-    organization,
-    repository,
-  });
+  const {state, dispatch} = useGithubbIssues(repository, organization);
+
   return (
     <React.Fragment>
-      <Text style={{marginLeft: 24, marginBottom: 8, color: theme.colors.text}}>
+      <Text style={{...styles.organizationName, color: theme.colors.text}}>
         {organization}
       </Text>
       <View
@@ -57,90 +51,108 @@ export default () => {
           flexDirection: 'row',
           marginLeft: 24,
         }}>
-        {filters.map(value => {
+        {state.filters.map(value => {
           return (
             <FilterItem
+              key={value}
               value={value}
               onActivate={() => {
-                setConfiguration({
-                  page: 1,
-                  filter: value,
+                dispatch({
+                  type: 'filter',
+                  payload: {
+                    filter: value,
+                  },
                 });
               }}
-              isActive={value === configuration.filter}
+              isActive={value === state.filter}
             />
           );
         })}
       </View>
-      {isLoading && configuration.page === 1 ? (
+      {state.isLoading && state.page === 1 ? (
         <ActivityIndicator
           size={24}
           color={theme.colors.primary}
           style={{flex: 1, backgroundColor: theme.colors.background}}
         />
       ) : (
-        <View style={styles.container}>
-          {issues.length === 0 ? (
-            <View style={styles.emptyScreen}>
-              <GithubIcon name={'mark-github'} color={'white'} size={32} />
-              <Text style={styles.emptyScreenText}>Wow, such empty ;(</Text>
-            </View>
-          ) : (
-            <FlatList
-              bounces={false}
-              onEndReachedThreshold={200}
-              ListFooterComponent={() => {
-                return (
-                  <View style={{marginHorizontal: 64, paddingVertical: 24}}>
-                    {isLoading ? (
-                      <ActivityIndicator
-                        size={24}
-                        color={theme.colors.primary}
-                        style={{
-                          height: 64,
-                          flex: 1,
-                          backgroundColor: theme.colors.background,
-                        }}
-                      />
-                    ) : (
-                      <Button
-                        borderColor={theme.colors.text}
-                        text="Load more"
-                        onPress={() => {
-                          setConfiguration({
-                            ...configuration,
-                            page: configuration.page + 1,
-                          });
-                        }}
-                      />
-                    )}
-                  </View>
-                );
-              }}
-              // onEndReached={() => {
-              //   console.log('triggered...')
-              //   setConfiguration({
-              //     ...configuration,
-              //     page: configuration.page + 1,
-              //   });
-              // }}
-              style={styles.container}
-              data={issues}
-              keyExtractor={item => `${item.title} - ${item.number}`}
-              renderItem={({item}) => {
-                return (
-                  <MemorizedIssueItem
-                    issue={item}
-                    repository={repository}
-                    organization={organization}
-                  />
-                );
-              }}
-            />
-          )}
-        </View>
+        <IssueList
+          {...state}
+          onLoadMore={() => {
+            dispatch({
+              type: 'fetch-next-page',
+            });
+          }}
+        />
       )}
     </React.Fragment>
+  );
+};
+
+export const IssueList: FunctionComponent<{
+  org: string;
+  repo: string;
+  issues: Issue[];
+  isLoading: boolean;
+  error: any;
+  onLoadMore?(): void;
+}> = ({org, repo, issues, isLoading, error, onLoadMore}) => {
+  const theme = useTheme();
+  return (
+    <View style={styles.container}>
+      {issues.length === 0 || error ? (
+        <View style={styles.emptyScreen}>
+          <GithubIcon name={'mark-github'} color={'white'} size={32} />
+          <Text style={styles.emptyScreenText}>
+            {error ? 'Woops, something went wrong ;(' : 'Wow, such empty ;('}
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          ListFooterComponent={() => {
+            if (!onLoadMore) {
+              return <React.Fragment />;
+            }
+            return (
+              <View style={{marginHorizontal: 64, paddingVertical: 24}}>
+                {isLoading ? (
+                  <ActivityIndicator
+                    size={24}
+                    color={theme.colors.primary}
+                    style={{
+                      height: 64,
+                      flex: 1,
+                      backgroundColor: theme.colors.background,
+                    }}
+                  />
+                ) : (
+                  <Button
+                    borderColor={theme.colors.text}
+                    text="Load more"
+                    onPress={() => {
+                      onLoadMore?.();
+                    }}
+                  />
+                )}
+              </View>
+            );
+          }}
+          style={styles.container}
+          data={issues}
+          keyExtractor={item => `${item.title} - ${item.number}`}
+          renderItem={({item}) => {
+            return (
+              <MemorizedIssueItem
+                issue={item}
+                repository={repo}
+                organization={org}
+                isBookmarked={false}
+              />
+            );
+          }}
+        />
+      )}
+    </View>
   );
 };
 
@@ -148,10 +160,12 @@ const IssueItem: FunctionComponent<{
   issue: Issue;
   organization: string;
   repository: string;
-}> = ({issue, organization, repository}) => {
+  isBookmarked: boolean;
+}> = ({issue, organization, repository, isBookmarked}) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -219,17 +233,21 @@ const IssueItem: FunctionComponent<{
             </View>
           )}
         </View>
-
-        <Text style={{color: theme.colors.text}}>
-          {issue.updated_at.slice(0, 4)}
-        </Text>
+        <GithubIcon
+          name={isBookmarked ? 'bookmark-slash' : 'bookmark'}
+          size={24}
+          color={theme.colors.primary}
+          onPress={() => {
+            handleBookmark(issue);
+          }}
+        />
       </View>
       <View style={{...styles.separator, width}} />
     </TouchableOpacity>
   );
 };
 
-const MemorizedIssueItem = React.memo(
+export const MemorizedIssueItem = React.memo(
   IssueItem,
   (prevProps, props) => prevProps.issue.number === props.issue.number,
 );
@@ -267,12 +285,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyScreenText: {marginTop: 8, color: 'white', alignSelf: 'center'},
+  organizationName: {
+    marginLeft: 24,
+    marginBottom: 8,
+  },
   issueItemContainer: {
     paddingTop: 24,
   },
   issueItemInner: {
     paddingHorizontal: 24,
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

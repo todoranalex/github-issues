@@ -56,7 +56,38 @@ const App = () => {
           name="Bookmarks"
           component={Bookmarks}
           options={{
-            headerShown: false,
+            headerStyle: {
+              backgroundColor: AppTheme.colors.background,
+            },
+            headerTitle: '',
+            headerLeft: () => {
+              return (
+                <View
+                  style={{
+                    marginLeft: 8,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Icon
+                    onPress={() => {
+                      // navigation.goBack();
+                    }}
+                    name={'arrow-left'}
+                    color={'white'}
+                    size={24}
+                  />
+                  <Text
+                    style={{
+                      color: 'white',
+                      marginLeft: 16,
+                      fontSize: 20,
+                      fontWeight: '700',
+                    }}>
+                    Bookmarked Issues
+                  </Text>
+                </View>
+              );
+            },
           }}
         />
 

@@ -2,6 +2,7 @@ import {useNavigation, useTheme} from '@react-navigation/native';
 import React, {FunctionComponent, useState} from 'react';
 import {
   Alert,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -14,7 +15,7 @@ import GithubIcon from 'react-native-vector-icons/Octicons';
 export default () => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const {height, width} = useWindowDimensions();
+  const {width} = useWindowDimensions();
   const [githubDetails, setGithubDetails] = useState<{
     repository: string;
     organization: string;
@@ -24,9 +25,7 @@ export default () => {
   });
 
   return (
-    // <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
-    // <ScrollView>
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <GithubIcon name="mark-github" color={theme.colors.primary} size={128} />
       <Text style={{color: theme.colors.primary, ...styles.subtitle}}>
         Your GitHub issues fetcher app
@@ -79,9 +78,7 @@ export default () => {
           }}
         />
       </View>
-    </View>
-    // </ScrollView>
-    // </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
