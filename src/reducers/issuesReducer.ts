@@ -12,6 +12,15 @@ export type Issue = {
   comments: number;
   repo: string;
   org: string;
+  assignees?: string[];
+  assignee?: {
+    name?: string;
+    avatarUrl?: string;
+  };
+  eventsUrl?: string;
+  labelsUrl?: string;
+  commentsUrl?: string;
+  repoUrl?: string;
 };
 
 export type Filter = 'all' | 'closed' | 'open';

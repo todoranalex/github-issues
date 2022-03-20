@@ -9,6 +9,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
+import {Issue} from '../reducers/issuesReducer';
 import Bookmarks from './Bookmarks';
 import Home from './Home';
 import IssueDetails from './IssueDetails';
@@ -20,7 +21,9 @@ export type NavigationParamList = {
     organization: string;
     repository: string;
   };
-  IssueDetails: {};
+  IssueDetails: {
+    issue: Issue;
+  };
   Bookmarks: {};
 };
 
@@ -135,7 +138,41 @@ const App = () => {
             },
           }}
         />
-        <Stack.Screen name="IssueDetails" component={IssueDetails} />
+        <Stack.Screen
+          name="IssueDetails"
+          component={IssueDetails}
+          options={{
+            headerStyle: {
+              backgroundColor: AppTheme.colors.background,
+            },
+            headerTitle: '',
+            // headerTitleStyle: {
+            //   color: AppTheme.colors.primary,
+            //   fontSize: 20,
+            // },
+            // headerBackTitle: 'Issues',
+            // headerBackTitleVisible: false,
+            headerLeft: () => {
+              return (
+                <View
+                  style={{
+                    marginLeft: 8,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Icon
+                    onPress={() => {
+                      // navigation.goBack();
+                    }}
+                    name={'arrow-left'}
+                    color={'white'}
+                    size={24}
+                  />
+                </View>
+              );
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

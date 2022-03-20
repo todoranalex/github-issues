@@ -1,16 +1,15 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {FunctionComponent, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   useWindowDimensions,
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
+import {Button, Input} from './IssuesComponents';
 
 export default () => {
   const theme = useTheme();
@@ -51,7 +50,6 @@ export default () => {
             });
           }}
         />
-
         <Button
           text={'Fetch Issues'}
           icon={'rocket'}
@@ -82,62 +80,6 @@ export default () => {
   );
 };
 
-const Input: FunctionComponent<{
-  label: string;
-  value: string;
-  placeholder: string;
-  onChangeText(value: string): void;
-}> = ({label, value, placeholder, onChangeText}): JSX.Element => {
-  const theme = useTheme();
-  return (
-    <React.Fragment>
-      <Text style={{color: theme.colors.primary, ...styles.textInputInfo}}>
-        {label}
-      </Text>
-      <TextInput
-        onChangeText={text => {
-          onChangeText(text);
-        }}
-        keyboardAppearance="dark"
-        style={{
-          ...styles.textInput,
-          borderColor: theme.colors.primary,
-          color: theme.colors.primary,
-        }}
-        placeholderTextColor={theme.colors.text}
-        placeholder={placeholder}
-        value={value}
-      />
-    </React.Fragment>
-  );
-};
-
-export const Button: FunctionComponent<{
-  text: string;
-  icon?: string;
-  borderColor?: string;
-  onPress(): void;
-}> = ({text, icon, borderColor, onPress}) => {
-  const theme = useTheme();
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{
-        ...styles.button,
-        borderColor: borderColor ?? theme.colors.primary,
-      }}>
-      <View style={styles.buttonInnerContainer}>
-        <Text style={{...styles.buttonText, color: theme.colors.primary}}>
-          {text}
-        </Text>
-        {icon && (
-          <GithubIcon name={icon} size={24} color={theme.colors.primary} />
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -147,26 +89,5 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: 24,
     marginBottom: 16,
-  },
-  textInputInfo: {
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    height: 48,
-    marginBottom: 16,
-    paddingLeft: 8,
-  },
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    height: 48,
-    marginBottom: 8,
-  },
-  buttonInnerContainer: {flexDirection: 'row', paddingHorizontal: 48},
-  buttonText: {
-    fontSize: 20,
-    marginRight: 8,
   },
 });

@@ -1,7 +1,5 @@
 import {Octokit} from '@octokit/rest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useEffect, useState} from 'react';
-import Issues from '../components/Issues';
 import {Filter, Issue} from '../reducers/issuesReducer';
 
 const BOOKMARKS_KEY = 'bookmarksKey';
@@ -68,6 +66,35 @@ class IssueService {
           } as Issue;
         });
       return issues;
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+  getIssue = async (
+    repo: string,
+    org: string,
+    issueNumber: number,
+  ): Promise<Issue> => {
+    try {
+      const rawResponse = await this.octokitClient.rest.issues.get({
+        owner: org,
+        repo,
+        issue_number: issueNumber,
+      });
+      return {
+        ...rawResponse.data,
+        org,
+        repo,
+        assignee: {
+          name: rawResponse.data.assignee?.name,
+          avatarUrl: rawResponse.data.assignee?.avatar_url,
+        },
+        repoUrl: rawResponse.data.repository_url,
+        eventsUrl: rawResponse.data.events_url,
+        commentsUrl: rawResponse.data.comments_url,
+        labelsUrl: rawResponse.data.labels_url,
+      } as Issue;
     } catch (e) {
       return Promise.reject(e);
     }

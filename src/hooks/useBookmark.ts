@@ -18,15 +18,3 @@ export default function useBookmark(bookmark: Issue): [boolean, () => void] {
   };
   return [isBookmarked, toggleBookmark];
 }
-
-export function useBookmarks(): Issue[] {
-  const [bookmarks, setBookmarks] = useState<Issue[]>([]);
-  useEffect(() => {
-    const get = async () => {
-      const bookmarks = await issueService.getBookmarks();
-      setBookmarks(bookmarks);
-    };
-    get();
-  }, []);
-  return bookmarks;
-}

@@ -1,13 +1,13 @@
 import React from 'react';
-import {View} from 'react-native';
-import {IssueList} from './Issues';
-import {useBookmarks} from '../hooks/useBookmark';
+import {StyleSheet, View} from 'react-native';
+import useBookmarks from '../hooks/useBookmarks';
+import {IssueList} from './IssuesComponents';
 
 export default () => {
   const bookmarks = useBookmarks();
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <IssueList
         issues={bookmarks}
         isLoading={bookmarks.length === 0}
@@ -16,3 +16,10 @@ export default () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingBottom: 24,
+  },
+});
