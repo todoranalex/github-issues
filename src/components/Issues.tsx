@@ -4,7 +4,7 @@ import {
   useRoute,
   useTheme,
 } from '@react-navigation/native';
-import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
+import React, {FunctionComponent} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -12,16 +12,11 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {FlatList, Text, View} from 'react-native';
-import {
-  Filter,
-  getBookmarks,
-  handleBookmark,
-  Issue,
-  useGithubbIssues,
-} from '../hooks';
+import {Filter, Issue, useGithubbIssues} from '../reducers/issuesReducer';
 import GithubIcon from 'react-native-vector-icons/Octicons';
 import {NavigationParamList} from './App';
 import {Button} from './Home';
+import useBookmark from '../hooks/useBookmark';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
 
@@ -90,13 +85,11 @@ export default () => {
 };
 
 export const IssueList: FunctionComponent<{
-  org: string;
-  repo: string;
   issues: Issue[];
   isLoading: boolean;
   error: any;
   onLoadMore?(): void;
-}> = ({org, repo, issues, isLoading, error, onLoadMore}) => {
+}> = ({issues, isLoading, error, onLoadMore}) => {
   const theme = useTheme();
   return (
     <View style={styles.container}>
@@ -141,14 +134,7 @@ export const IssueList: FunctionComponent<{
           data={issues}
           keyExtractor={item => `${item.title} - ${item.number}`}
           renderItem={({item}) => {
-            return (
-              <MemorizedIssueItem
-                issue={item}
-                repository={repo}
-                organization={org}
-                isBookmarked={false}
-              />
-            );
+            return <MemorizedIssueItem issue={item} />;
           }}
         />
       )}
@@ -158,13 +144,11 @@ export const IssueList: FunctionComponent<{
 
 const IssueItem: FunctionComponent<{
   issue: Issue;
-  organization: string;
-  repository: string;
-  isBookmarked: boolean;
-}> = ({issue, organization, repository, isBookmarked}) => {
+}> = ({issue}) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
+  const [isBookmarked, setBookmark] = useBookmark(issue);
 
   return (
     <TouchableOpacity
@@ -195,7 +179,7 @@ const IssueItem: FunctionComponent<{
               ...styles.issueItemHeaderText,
               color: theme.colors.text,
             }}>
-            {`${organization} / ${repository} #${issue.number}`}
+            {`${issue.org} / ${issue.repo} #${issue.number}`}
           </Text>
           <Text
             numberOfLines={2}
@@ -234,11 +218,11 @@ const IssueItem: FunctionComponent<{
           )}
         </View>
         <GithubIcon
-          name={isBookmarked ? 'bookmark-slash' : 'bookmark'}
+          name={isBookmarked ? 'heart-fill' : 'heart'}
           size={24}
           color={theme.colors.primary}
           onPress={() => {
-            handleBookmark(issue);
+            setBookmark();
           }}
         />
       </View>

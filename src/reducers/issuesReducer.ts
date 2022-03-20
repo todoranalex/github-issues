@@ -2,31 +2,6 @@ import {useEffect, useReducer, useRef} from 'react';
 import {Octokit} from '@octokit/rest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BOOKMARKS_KEY = 'bookmarksKey';
-
-export const getBookmarks = async (): Promise<Issue[]> => {
-  const raw = await AsyncStorage.getItem(BOOKMARKS_KEY);
-  return raw ? JSON.parse(raw) : [];
-};
-
-export const setBookmarks = (bookmarks: Issue[]): void => {
-  AsyncStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
-};
-
-export const handleBookmark = async (bookmark: Issue) => {
-  const bookmarks = await getBookmarks();
-  if (
-    !!bookmarks.find(
-      b => b.number === bookmark.number && b.updated_at === b.updated_at, //maybe check repo?
-    )
-  ) {
-    setBookmarks(bookmarks.filter(b => b.number !== bookmark.number));
-  } else {
-    bookmarks.push(bookmark);
-    setBookmarks(bookmarks);
-  }
-};
-
 export type Issue = {
   title: string;
   state: string;
@@ -39,9 +14,11 @@ export type Issue = {
   }[];
   updated_at: string;
   comments: number;
+  repo: string;
+  org: string;
 };
 
-type Filter = 'all' | 'closed' | 'open';
+export type Filter = 'all' | 'closed' | 'open';
 
 const initialState: State = {
   issues: [],
@@ -141,7 +118,13 @@ export function useGithubbIssues(repository: string, organization: string) {
         console.log(data);
         const issues = data.data
           .filter(d => !d.pull_request) // filter pull requests
-          .map(f => f as Issue);
+          .map(f => {
+            return {
+              ...f,
+              org: organization,
+              repo: repository,
+            } as Issue;
+          });
         dispatch({
           type: 'fetch-success',
           payload: {

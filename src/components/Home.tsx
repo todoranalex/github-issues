@@ -72,7 +72,7 @@ export default () => {
         />
         <Button
           text={'Bookmarks'}
-          icon={'bookmark'}
+          icon={'heart-fill'}
           onPress={() => {
             navigation.navigate('Bookmarks', {});
           }}
