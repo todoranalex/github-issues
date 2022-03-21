@@ -1,45 +1,8 @@
 import {Octokit} from '@octokit/rest';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Filter, Issue} from '../reducers/issuesReducer';
 
-const BOOKMARKS_KEY = 'bookmarksKey';
-
 class IssueService {
-  octokitClient = new Octokit();
-
-  private setBookmarks = async (bookmarks: Issue[]): Promise<void> => {
-    await AsyncStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
-  };
-
-  getBookmarks = async (): Promise<Issue[]> => {
-    const raw = await AsyncStorage.getItem(BOOKMARKS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  };
-
-  handleBookmark = async (bookmark: Issue) => {
-    const bookmarks = await this.getBookmarks();
-    const savedBookmark = !!bookmarks.find(
-      b => b.number === bookmark.number, // ensure the issue belongs to the repo..
-    );
-    if (!!savedBookmark) {
-      console.log('bookmark will be removed!', savedBookmark);
-      const filtered = bookmarks.filter(b => {
-        return b.number !== bookmark.number;
-      });
-      await this.setBookmarks(filtered);
-
-      console.log('bookmark removed, array is', filtered);
-    } else {
-      bookmarks.push(bookmark);
-      await this.setBookmarks(bookmarks);
-      console.log('bookmark added array is', bookmarks);
-    }
-  };
-
-  isBookmarkedInStorage = async (bookmark: Issue): Promise<boolean> => {
-    const bookmarks = await this.getBookmarks();
-    return !!bookmarks.find(b => b.number === bookmark.number);
-  };
+  private octokitClient = new Octokit();
 
   getIssues = async (
     repo: string,

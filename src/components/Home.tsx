@@ -33,7 +33,7 @@ export default () => {
         <Input
           label={'Organization'}
           value={githubDetails.organization}
-          placeholder={'Insert organization here'}
+          placeholder={'e.g facebook'}
           onChangeText={organization => {
             setGithubDetails(state => {
               return {...state, organization};
@@ -43,7 +43,7 @@ export default () => {
         <Input
           label={'Repository'}
           value={githubDetails.repository}
-          placeholder={'Insert repository here'}
+          placeholder={'e.g react-native'}
           onChangeText={repository => {
             setGithubDetails(state => {
               return {...state, repository};
