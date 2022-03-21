@@ -20,17 +20,13 @@ class BookmarkService {
       b => b.number === bookmark.number, // ensure the issue belongs to the repo..
     );
     if (!!savedBookmark) {
-      console.log('bookmark will be removed!', savedBookmark);
       const filtered = bookmarks.filter(b => {
         return b.number !== bookmark.number;
       });
       await this.setBookmarks(filtered);
-
-      console.log('bookmark removed, array is', filtered);
     } else {
       bookmarks.push(bookmark);
       await this.setBookmarks(bookmarks);
-      console.log('bookmark added array is', bookmarks);
     }
   };
 

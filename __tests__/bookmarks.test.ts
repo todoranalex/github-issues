@@ -1,5 +1,6 @@
 import {Issue} from '../src/reducers/issuesReducer';
 import bookmarksService from '../src/services/BookmarkService';
+import {mockIssue, mockIssue2, mockIssue3} from './utils';
 
 describe('Bookmarked Issues', () => {
   test('get bookmarks, initially it should be an empty array', async () => {
@@ -42,36 +43,5 @@ describe('Bookmarked Issues', () => {
     await bookmarksService.handleBookmark(mockIssue3);
     const bookmarks = await bookmarksService.getBookmarks();
     expect(bookmarks).toEqual([]);
-  })
+  });
 });
-
-const mockIssue: Issue = {
-  number: 1,
-  title: 'title1',
-  state: 'open',
-  labels: [],
-  updated_at: '10',
-  comments: 0,
-  repo: 'repo1',
-  org: 'org1',
-};
-const mockIssue2: Issue = {
-  number: 2,
-  title: 'title2',
-  state: 'open',
-  labels: [],
-  updated_at: '10',
-  comments: 0,
-  repo: 'repo2',
-  org: 'org2',
-};
-const mockIssue3: Issue = {
-  number: 3,
-  title: 'title3',
-  state: 'open',
-  labels: [],
-  updated_at: '10',
-  comments: 0,
-  repo: 'repo3',
-  org: 'org3',
-};

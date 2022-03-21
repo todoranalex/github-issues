@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react';
 import {Issue} from '../reducers/issuesReducer';
-import issueService from '../services/IssueService';
+import bookmarksService from '../services/BookmarkService';
 
 export default function useBookmarks(): Issue[] {
   const [bookmarks, setBookmarks] = useState<Issue[]>([]);
   useEffect(() => {
     const get = async () => {
-      const bookmarks = await issueService.getBookmarks();
+      const bookmarks = await bookmarksService.getBookmarks();
       setBookmarks(bookmarks);
     };
     get();

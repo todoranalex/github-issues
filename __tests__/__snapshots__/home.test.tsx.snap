@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home Components Home snapshot 1`] = `
+<RCTScrollView
+  contentContainerStyle={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View>
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        Array [
+          Object {
+            "color": "rgb(0, 122, 255)",
+            "fontSize": 128,
+          },
+          undefined,
+          Object {
+            "fontFamily": "Octicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      
+    </Text>
+    <Text
+      style={
+        Object {
+          "color": "rgb(0, 122, 255)",
+          "marginBottom": 16,
+          "marginTop": 24,
+        }
+      }
+    >
+      Your GitHub issues fetcher app
+    </Text>
+    <View
+      style={
+        Object {
+          "width": 622,
+        }
+      }
+    >
+      <View
+        testID="orgInputTestID"
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgb(0, 122, 255)",
+              "marginBottom": 8,
+            }
+          }
+        >
+          Organization
+        </Text>
+        <TextInput
+          keyboardAppearance="dark"
+          onChangeText={[Function]}
+          placeholder="e.g facebook"
+          placeholderTextColor="rgb(28, 28, 30)"
+          style={
+            Object {
+              "borderColor": "rgb(0, 122, 255)",
+              "borderWidth": 1,
+              "color": "rgb(0, 122, 255)",
+              "height": 48,
+              "marginBottom": 16,
+              "paddingLeft": 8,
+            }
+          }
+          value=""
+        />
+      </View>
+      <View
+        testID="repoInputTestID"
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgb(0, 122, 255)",
+              "marginBottom": 8,
+            }
+          }
+        >
+          Repository
+        </Text>
+        <TextInput
+          keyboardAppearance="dark"
+          onChangeText={[Function]}
+          placeholder="e.g react-native"
+          placeholderTextColor="rgb(28, 28, 30)"
+          style={
+            Object {
+              "borderColor": "rgb(0, 122, 255)",
+              "borderWidth": 1,
+              "color": "rgb(0, 122, 255)",
+              "height": 48,
+              "marginBottom": 16,
+              "paddingLeft": 8,
+            }
+          }
+          value=""
+        />
+      </View>
+      <View
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "borderColor": "rgb(0, 122, 255)",
+            "borderWidth": 1,
+            "height": 48,
+            "justifyContent": "center",
+            "marginBottom": 8,
+            "opacity": 1,
+          }
+        }
+        testID="fetchIssuesButtonTestID"
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "paddingHorizontal": 48,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "rgb(0, 122, 255)",
+                "fontSize": 20,
+                "marginRight": 8,
+              }
+            }
+          >
+            Fetch Issues
+          </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "rgb(0, 122, 255)",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "borderColor": "rgb(0, 122, 255)",
+            "borderWidth": 1,
+            "height": 48,
+            "justifyContent": "center",
+            "marginBottom": 8,
+            "opacity": 1,
+          }
+        }
+        testID="bookmarksButtonTestID"
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "paddingHorizontal": 48,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "rgb(0, 122, 255)",
+                "fontSize": 20,
+                "marginRight": 8,
+              }
+            }
+          >
+            Bookmarks
+          </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "rgb(0, 122, 255)",
+                  "fontSize": 24,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "Octicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

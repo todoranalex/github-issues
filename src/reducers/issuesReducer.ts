@@ -32,7 +32,7 @@ export const initialState: State = {
   filter: 'open',
   filters: ['open', 'closed', 'all'],
   page: 1,
-  issuesPerPage: 20,
+  issuesPerPage: 50,
   isLoading: true,
   error: undefined,
 };
@@ -73,7 +73,6 @@ type Action =
     };
 
 const issuesReducer = (state: State, action: Action): State => {
-  console.log('DISPATCHED', state, action);
   switch (action.type) {
     case 'fetch-success': {
       return {

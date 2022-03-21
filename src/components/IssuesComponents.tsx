@@ -30,11 +30,12 @@ export const Input: FunctionComponent<{
   label: string;
   value: string;
   placeholder: string;
+  testID: string;
   onChangeText(value: string): void;
-}> = ({label, value, placeholder, onChangeText}): JSX.Element => {
+}> = ({label, value, placeholder, testID, onChangeText}): JSX.Element => {
   const theme = useTheme();
   return (
-    <React.Fragment>
+    <View testID={testID}>
       <Text style={{color: theme.colors.primary, ...styles.textInputInfo}}>
         {label}
       </Text>
@@ -52,7 +53,7 @@ export const Input: FunctionComponent<{
         placeholder={placeholder}
         value={value}
       />
-    </React.Fragment>
+    </View>
   );
 };
 
@@ -60,11 +61,13 @@ export const Button: FunctionComponent<{
   text: string;
   icon?: string;
   borderColor?: string;
+  testID?: string;
   onPress(): void;
-}> = ({text, icon, borderColor, onPress}) => {
+}> = ({text, icon, borderColor, testID, onPress}) => {
   const theme = useTheme();
   return (
     <TouchableOpacity
+      testID={testID}
       onPress={onPress}
       style={{
         ...styles.button,

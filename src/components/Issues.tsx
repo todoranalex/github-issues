@@ -73,6 +73,7 @@ export default () => {
       </View>
       {state.isLoading && state.page === 1 ? (
         <ActivityIndicator
+          testID="loading"
           size={24}
           color={theme.colors.primary}
           style={{flex: 1, backgroundColor: theme.colors.background}}

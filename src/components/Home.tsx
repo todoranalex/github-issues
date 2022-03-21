@@ -31,6 +31,7 @@ export default () => {
       </Text>
       <View style={{width: width - 128}}>
         <Input
+          testID={'orgInputTestID'}
           label={'Organization'}
           value={githubDetails.organization}
           placeholder={'e.g facebook'}
@@ -41,6 +42,7 @@ export default () => {
           }}
         />
         <Input
+          testID={'repoInputTestID'}
           label={'Repository'}
           value={githubDetails.repository}
           placeholder={'e.g react-native'}
@@ -51,6 +53,7 @@ export default () => {
           }}
         />
         <Button
+          testID="fetchIssuesButtonTestID"
           text={'Fetch Issues'}
           icon={'rocket'}
           onPress={() => {
@@ -69,6 +72,7 @@ export default () => {
           }}
         />
         <Button
+          testID="bookmarksButtonTestID"
           text={'Bookmarks'}
           icon={'heart-fill'}
           onPress={() => {
