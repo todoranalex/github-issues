@@ -12,6 +12,9 @@ import {NavigationParamList} from './App';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>;
 
+/***
+ * Component used to display all the details for an individual issue. Disclaimer: Design not yet finished
+ */
 export default () => {
   const {issue: defaultIssue} = useRoute<IssuesRouteProps>().params;
   const theme = useTheme();

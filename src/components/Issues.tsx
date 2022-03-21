@@ -9,6 +9,9 @@ import {FilterItem, IssueList} from './IssuesComponents';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
 
+/***
+ * Component used to display the list of issues from Github. It also always filtering & pagination by dispatching the appropiate actions to the reducer. 
+ */
 export default () => {
   const theme = useTheme();
   const {organization, repository} = useRoute<IssuesRouteProps>().params;

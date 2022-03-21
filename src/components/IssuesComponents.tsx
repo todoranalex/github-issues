@@ -26,6 +26,10 @@ const issueIcons = {
   },
 };
 
+/***
+ * Generic components used in the App.
+ */
+
 export const Input: FunctionComponent<{
   label: string;
   value: string;
@@ -85,6 +89,9 @@ export const Button: FunctionComponent<{
   );
 };
 
+/***
+ * Component used to display a large list of issues. It also allows pagination
+ */
 export const IssueList: FunctionComponent<{
   issues: Issue[];
   isLoading: boolean;
@@ -143,6 +150,9 @@ export const IssueList: FunctionComponent<{
   );
 };
 
+/***
+ * Component used to display an issue. By using the memoized version, we ensure it doesn't render unnecesarily. Allows bookmarking
+ */
 const IssueItem: FunctionComponent<{
   issue: Issue;
 }> = ({issue}) => {
@@ -237,6 +247,9 @@ export const MemorizedIssueItem = React.memo(
   (prevProps, props) => prevProps.issue.number === props.issue.number,
 );
 
+/***
+ * Component used to display the available filters that can be applied to the issues list
+ */
 export const FilterItem: FunctionComponent<{
   value: Filter;
   isActive: boolean;
@@ -257,6 +270,26 @@ export const FilterItem: FunctionComponent<{
         />
       )}
     </TouchableOpacity>
+  );
+};
+
+/***
+ * Component used to override the default navigation header
+ */
+export const NavigationHeaderItem: FunctionComponent<{
+  title?: string;
+  onPress(): void;
+}> = ({title, onPress}) => {
+  return (
+    <View style={styles.navHeaderContainer}>
+      <GithubIcon
+        onPress={onPress}
+        name={'arrow-left'}
+        color={'white'}
+        size={24}
+      />
+      {title && <Text style={styles.navHeaderTitle}>{title}</Text>}
+    </View>
   );
 };
 
@@ -351,5 +384,16 @@ const styles = StyleSheet.create({
     marginRight: 8,
     backgroundColor: '#778899',
     flexDirection: 'row',
+  },
+  navHeaderContainer: {
+    marginLeft: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  navHeaderTitle: {
+    color: 'white',
+    marginLeft: 16,
+    fontSize: 20,
+    fontWeight: '700',
   },
 });

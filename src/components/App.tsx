@@ -1,19 +1,16 @@
 import {
   DefaultTheme,
   NavigationContainer,
-  ParamListBase,
-  useNavigation,
-  useTheme,
+  useNavigationContainerRef,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
 import {Issue} from '../reducers/issuesReducer';
 import Bookmarks from './Bookmarks';
 import Home from './Home';
 import IssueDetails from './IssueDetails';
 import Issues from './Issues';
+import {NavigationHeaderItem} from './IssuesComponents';
 
 export type NavigationParamList = {
   Home: {};
@@ -45,8 +42,9 @@ const AppTheme = {
 
 const App = () => {
   const Stack = createNativeStackNavigator<NavigationParamList>();
+  const navigationRef = useNavigationContainerRef();
   return (
-    <NavigationContainer theme={AppTheme}>
+    <NavigationContainer theme={AppTheme} ref={navigationRef}>
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
@@ -65,30 +63,12 @@ const App = () => {
             headerTitle: '',
             headerLeft: () => {
               return (
-                <View
-                  style={{
-                    marginLeft: 8,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Icon
-                    onPress={() => {
-                      // navigation.goBack();
-                    }}
-                    name={'arrow-left'}
-                    color={'white'}
-                    size={24}
-                  />
-                  <Text
-                    style={{
-                      color: 'white',
-                      marginLeft: 16,
-                      fontSize: 20,
-                      fontWeight: '700',
-                    }}>
-                    Bookmarked Issues
-                  </Text>
-                </View>
+                <NavigationHeaderItem
+                  title={'Bookmarks'}
+                  onPress={() => {
+                    navigationRef.goBack();
+                  }}
+                />
               );
             },
           }}
@@ -102,38 +82,14 @@ const App = () => {
               backgroundColor: AppTheme.colors.background,
             },
             headerTitle: '',
-            // headerTitleStyle: {
-            //   color: AppTheme.colors.primary,
-            //   fontSize: 20,
-            // },
-            // headerBackTitle: 'Issues',
-            // headerBackTitleVisible: false,
             headerLeft: () => {
               return (
-                <View
-                  style={{
-                    marginLeft: 8,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Icon
-                    onPress={() => {
-                      // navigation.goBack();
-                    }}
-                    name={'arrow-left'}
-                    color={'white'}
-                    size={24}
-                  />
-                  <Text
-                    style={{
-                      color: 'white',
-                      marginLeft: 16,
-                      fontSize: 20,
-                      fontWeight: '700',
-                    }}>
-                    Issues
-                  </Text>
-                </View>
+                <NavigationHeaderItem
+                  title={'Issues'}
+                  onPress={() => {
+                    navigationRef.goBack();
+                  }}
+                />
               );
             },
           }}
@@ -146,29 +102,13 @@ const App = () => {
               backgroundColor: AppTheme.colors.background,
             },
             headerTitle: '',
-            // headerTitleStyle: {
-            //   color: AppTheme.colors.primary,
-            //   fontSize: 20,
-            // },
-            // headerBackTitle: 'Issues',
-            // headerBackTitleVisible: false,
             headerLeft: () => {
               return (
-                <View
-                  style={{
-                    marginLeft: 8,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Icon
-                    onPress={() => {
-                      // navigation.goBack();
-                    }}
-                    name={'arrow-left'}
-                    color={'white'}
-                    size={24}
-                  />
-                </View>
+                <NavigationHeaderItem
+                  onPress={() => {
+                    navigationRef.goBack();
+                  }}
+                />
               );
             },
           }}

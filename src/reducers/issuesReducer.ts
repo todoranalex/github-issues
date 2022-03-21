@@ -72,6 +72,9 @@ type Action =
       };
     };
 
+  /***
+ * Reducer used to handle the state of the Github issues.  
+ */
 const issuesReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'fetch-success': {

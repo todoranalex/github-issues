@@ -11,6 +11,9 @@ import {
 import GithubIcon from 'react-native-vector-icons/Octicons';
 import {Button, Input} from './IssuesComponents';
 
+/***
+ * Component used as the main entry point for the app.
+ */
 export default () => {
   const theme = useTheme();
   const navigation = useNavigation();

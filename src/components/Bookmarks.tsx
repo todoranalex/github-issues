@@ -3,9 +3,11 @@ import {StyleSheet, View} from 'react-native';
 import useBookmarks from '../hooks/useBookmarks';
 import {IssueList} from './IssuesComponents';
 
+/***
+ * Component used to display the list of issues that were bookmarked.
+ */
 export default () => {
   const bookmarks = useBookmarks();
-
   return (
     <View style={styles.container}>
       <IssueList
