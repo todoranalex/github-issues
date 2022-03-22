@@ -1,20 +1,34 @@
-import issuesReducer, {initialState} from '../src/reducers/issuesReducer';
+import issuesReducer, {
+  Filter,
+  initialState,
+} from '../src/reducers/issuesReducer';
 import issueService from '../src/services/IssueService';
-import {mockIssue, mockIssue2, mockIssue3} from './utils';
+import {
+  getIssuesResponse,
+  mockGetIssueParams,
+  mockGetIssuesBadParams,
+  mockGetIssuesParams,
+  mockIssue1,
+  mockIssue2,
+  mockIssue3,
+  mockReturnCodes,
+  notFoundResponse,
+} from './resources';
+import {mockGetIssues, mockGetIssue} from './utils';
 
-describe('Issue List', () => {
+describe('cover tests for issue list reducer and services', () => {
   test('reducer fetch success', () => {
     expect(
       issuesReducer(initialState, {
         type: 'fetch-success',
         payload: {
-          issues: [mockIssue, mockIssue2, mockIssue3],
+          issues: [mockIssue1, mockIssue2, mockIssue3],
         },
       }),
     ).toEqual({
       ...initialState,
       isLoading: false,
-      issues: [mockIssue, mockIssue2, mockIssue3],
+      issues: [mockIssue1, mockIssue2, mockIssue3],
     });
   });
 
@@ -49,47 +63,54 @@ describe('Issue List', () => {
   });
 
   test('get issues successfuly', async () => {
-    const issues = await issueService.getIssues(
-      'react-native',
-      'facebook',
-      30,
-      'open',
-      1,
+    const {repo, org, per_page, page, state} = mockGetIssuesParams;
+    const path = `/repos/${org}/${repo}/issues`;
+    mockGetIssues(
+      path,
+      {per_page, state, page},
+      getIssuesResponse,
+      mockReturnCodes.success,
     );
-    expect(issues.length > 0);
-  });
-
-  test('its not possible to fetch more issues than per_page setting', async () => {
     const issues = await issueService.getIssues(
-      'react-native',
-      'facebook',
-      100,
-      'open',
-      1,
+      repo,
+      org,
+      per_page,
+      state as Filter,
+      page,
     );
-    expect(issues.length <= 100);
+    expect(issues).toHaveLength(3);
+    expect(issues[0].number).toBe(getIssuesResponse[0].number);
+    expect(issues[1].number).toBe(getIssuesResponse[1].number);
+    expect(issues[2].number).toBe(getIssuesResponse[2].number);
   });
 
   test('fail to get issues, by providing an inexistent repo & org', async () => {
+    const {repo, org, per_page, page, state} = mockGetIssuesBadParams;
+    const path = `/repos/${org}/${repo}/issues`;
     try {
-      await issueService.getIssues(
-        'react-native137812379',
-        'facebook1234590-1-87',
-        30,
-        'open',
-        1,
+      mockGetIssues(
+        path,
+        {per_page, state, page},
+        notFoundResponse,
+        mockReturnCodes.notFound,
       );
-    } catch (e) {
+      await issueService.getIssues(repo, org, per_page, state as Filter, page);
+    } catch (e: any) {
       expect(e).toBeDefined();
+      expect(e.status).toBe(mockReturnCodes.notFound);
+      expect(e.response.data.message).toBe(notFoundResponse.message);
+      expect(e.response.data.documentation_url).toBe(
+        notFoundResponse.documentation_url,
+      );
     }
   });
 
-  test('get a single issue', async () => {
-    const issue = await issueService.getIssue(
-      'react-native',
-      'facebook',
-      33384,
-    );
+  test('get a single issue successfully', async () => {
+    const {repo, org, issueNumber} = mockGetIssueParams;
+    const path = `/repos/${org}/${repo}/issues/${issueNumber}`;
+    mockGetIssue(path, mockIssue1);
+    const issue = await issueService.getIssue(repo, org, issueNumber);
     expect(issue).toBeDefined();
+    expect(issue.number).toBe(mockIssue1.number);
   });
 });

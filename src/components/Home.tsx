@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import {Button, Input} from './IssuesComponents';
+import {Button, Input} from './Generic';
 
 /***
  * Component used as the main entry point for the app.

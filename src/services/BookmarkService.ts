@@ -3,6 +3,9 @@ import {Issue} from '../reducers/issuesReducer';
 
 const BOOKMARKS_KEY = 'bookmarksKey';
 
+/***
+ * Class Service which handles interaction with the Async Storage for bookmarks handling
+ * */
 class BookmarkService {
   private setBookmarks = async (bookmarks: Issue[]): Promise<void> => {
     await AsyncStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));

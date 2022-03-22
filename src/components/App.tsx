@@ -10,7 +10,7 @@ import Bookmarks from './Bookmarks';
 import Home from './Home';
 import IssueDetails from './IssueDetails';
 import Issues from './Issues';
-import {NavigationHeaderItem} from './IssuesComponents';
+import {NavigationHeaderItem} from './Generic';
 
 export type NavigationParamList = {
   Home: {};

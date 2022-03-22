@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import useBookmarks from '../hooks/useBookmarks';
-import {IssueList} from './IssuesComponents';
+import {IssueList} from './Generic';
 
 /***
  * Component used to display the list of issues that were bookmarked.

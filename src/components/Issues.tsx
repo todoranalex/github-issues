@@ -5,7 +5,7 @@ import {Text, View} from 'react-native';
 import issuesReducer, {initialState} from '../reducers/issuesReducer';
 import {NavigationParamList} from './App';
 import issueService from '../services/IssueService';
-import {FilterItem, IssueList} from './IssuesComponents';
+import {FilterItem, IssueList} from './Generic';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
 

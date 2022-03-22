@@ -1,6 +1,9 @@
 import {Octokit} from '@octokit/rest';
 import {Filter, Issue} from '../reducers/issuesReducer';
 
+/***
+ * Class Service which handles communication with the GithubAPI
+ * */
 class IssueService {
   private octokitClient = new Octokit();
 

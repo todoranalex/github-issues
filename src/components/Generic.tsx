@@ -39,14 +39,13 @@ export const Input: FunctionComponent<{
 }> = ({label, value, placeholder, testID, onChangeText}): JSX.Element => {
   const theme = useTheme();
   return (
-    <View testID={testID}>
+    <View>
       <Text style={{color: theme.colors.primary, ...styles.textInputInfo}}>
         {label}
       </Text>
       <TextInput
-        onChangeText={text => {
-          onChangeText(text);
-        }}
+        testID={testID}
+        onChangeText={onChangeText}
         keyboardAppearance="dark"
         style={{
           ...styles.textInput,

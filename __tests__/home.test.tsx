@@ -1,7 +1,7 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {fireEvent, render} from '@testing-library/react-native';
 import Home from '../src/components/Home';
-import renderer from 'react-test-renderer';
+import {Button} from '../src/components/Generic';
 
 describe('Home Components', () => {
   test('test org input mount', () => {
@@ -20,8 +20,17 @@ describe('Home Components', () => {
     const {getByTestId} = render(<Home />);
     expect(getByTestId('bookmarksButtonTestID')).toBeDefined();
   });
-  test('Home snapshot', () => {
-    const snap = renderer.create(<Home />).toJSON();
-    expect(snap).toMatchSnapshot();
+
+  test('fetch issues button press', () => {
+    const mockFn = jest.fn();
+    const {getByTestId} = render(
+      <Button
+        testID="fetchIssuesButtonTestID"
+        onPress={mockFn}
+        text={'Go To Issues'}
+      />,
+    );
+    fireEvent.press(getByTestId('fetchIssuesButtonTestID'));
+    expect(mockFn).toBeCalled();
   });
 });

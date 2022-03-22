@@ -1,6 +1,5 @@
-import {Issue} from '../src/reducers/issuesReducer';
 import bookmarksService from '../src/services/BookmarkService';
-import {mockIssue, mockIssue2, mockIssue3} from './utils';
+import {mockIssue1, mockIssue2, mockIssue3} from './resources';
 
 describe('Bookmarked Issues', () => {
   test('get bookmarks, initially it should be an empty array', async () => {
@@ -8,7 +7,7 @@ describe('Bookmarked Issues', () => {
     expect(bookmarks).toEqual([]);
   });
   test('add a bookmark, bookmarks list length should be 1', async () => {
-    await bookmarksService.handleBookmark(mockIssue);
+    await bookmarksService.handleBookmark(mockIssue1);
     const bookmarks = await bookmarksService.getBookmarks();
     expect(bookmarks).toHaveLength(1);
   });
@@ -25,11 +24,11 @@ describe('Bookmarked Issues', () => {
   });
   test('check bookmarks content match added bookmarks', async () => {
     const bookmarks = await bookmarksService.getBookmarks();
-    expect(bookmarks[0]).toMatchObject(mockIssue);
+    expect(bookmarks[0]).toMatchObject(mockIssue1);
     expect(bookmarks[1]).toMatchObject(mockIssue3);
   });
   test('add a bookmark that already exists, it should be removed', async () => {
-    await bookmarksService.handleBookmark(mockIssue);
+    await bookmarksService.handleBookmark(mockIssue1);
     const bookmarks = await bookmarksService.getBookmarks();
     expect(bookmarks).toHaveLength(1);
   });
