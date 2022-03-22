@@ -22,9 +22,11 @@ https://user-images.githubusercontent.com/37213839/159453474-5a469758-405f-469e-
 
 **Step 3:** Run `pod install` in `ios` folder (make sure `cocoapods` is installed)
 
-**Step 4:** Run the app with `npx react-native run-ios` or `npx react-native run-android`
+**Step 4**: Start the Metro bundler with `npx react-native start --reset-cache`
 
-**Step 5:** Run tests with `npm test`
+**Step 5:** Run the app with `npx react-native run-ios` or `npx react-native run-android`
+
+**Step 6:** Run tests with `npm test`
 
 ## Implementation overview
 
