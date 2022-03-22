@@ -3,10 +3,16 @@ import {Issue} from '../reducers/issuesReducer';
 
 const BOOKMARKS_KEY = 'bookmarksKey';
 
+interface IIBookmarksService {
+  getBookmarks(): Promise<Issue[]>;
+  handleBookmark(bookmark: Issue): void;
+  isBookmarkedInStorage(bookmark: Issue): Promise<boolean>;
+}
+
 /***
  * Class Service which handles interaction with the Async Storage for bookmarks handling
  * */
-class BookmarkService {
+class BookmarkService implements IIBookmarksService {
   private setBookmarks = async (bookmarks: Issue[]): Promise<void> => {
     await AsyncStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
   };
@@ -40,4 +46,4 @@ class BookmarkService {
 }
 
 const bookmarksService = new BookmarkService();
-export default bookmarksService;
+export default bookmarksService as IIBookmarksService;

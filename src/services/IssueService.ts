@@ -1,10 +1,21 @@
 import {Octokit} from '@octokit/rest';
 import {Filter, Issue} from '../reducers/issuesReducer';
 
+interface IIssueService {
+  getIssues(
+    repo: string,
+    org: string,
+    issuesPerPage: number,
+    filter: Filter,
+    page: number,
+  ): Promise<Issue[]>;
+  getIssue(repo: string, org: string, issueNumber: number): Promise<Issue>;
+}
+
 /***
  * Class Service which handles communication with the GithubAPI
  * */
-class IssueService {
+class IssueService implements IIssueService {
   private octokitClient = new Octokit();
 
   getIssues = async (
@@ -68,4 +79,4 @@ class IssueService {
 }
 
 const issueService = new IssueService();
-export default issueService;
+export default issueService as IIssueService;
