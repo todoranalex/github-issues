@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, render} from '@testing-library/react-native';
-import Home from '../src/components/Home';
-import {Button} from '../src/components/Generic';
+import Home from '.';
+import {Button} from '../../components';
 
 describe('Home Components', () => {
   test('test org input mount', () => {

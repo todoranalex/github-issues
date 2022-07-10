@@ -7,8 +7,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import useIssue from '../hooks/useIssue';
-import {NavigationParamList} from './App';
+import useIssue from '../../hooks/useIssue';
+import {NavigationParamList} from '../Entry/App';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>;
 
@@ -86,7 +86,7 @@ export default () => {
 const styles = StyleSheet.create({
   organizationName: {
     marginLeft: 24,
-    marginBottom: 8,
+    marginVertical: 8,
   },
   title: {
     paddingHorizontal: 24,

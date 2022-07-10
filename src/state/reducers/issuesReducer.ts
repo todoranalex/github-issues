@@ -1,29 +1,4 @@
-export type Issue = {
-  title: string;
-  state: string;
-  number: number;
-  labels: {
-    id: number;
-    name: string;
-    description: string;
-    color: string;
-  }[];
-  updated_at: string;
-  comments: number;
-  repo: string;
-  org: string;
-  assignees?: string[];
-  assignee?: {
-    name?: string;
-    avatarUrl?: string;
-  };
-  eventsUrl?: string;
-  labelsUrl?: string;
-  commentsUrl?: string;
-  repoUrl?: string;
-};
-
-export type Filter = 'all' | 'closed' | 'open';
+import {Issue, Filter} from '../../api/issues/types';
 
 export const initialState: State = {
   issues: [],
@@ -72,8 +47,8 @@ type Action =
       };
     };
 
-  /***
- * Reducer used to handle the state of the Github issues.  
+/***
+ * Reducer used to handle the state of the Github issues.
  */
 const issuesReducer = (state: State, action: Action): State => {
   switch (action.type) {

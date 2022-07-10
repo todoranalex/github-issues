@@ -5,12 +5,12 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {Issue} from '../reducers/issuesReducer';
-import Bookmarks from './Bookmarks';
-import Home from './Home';
-import IssueDetails from './IssueDetails';
-import Issues from './Issues';
-import {NavigationHeaderItem} from './Generic';
+import Bookmarks from '../Bookmarks';
+import Home from '../Home';
+import IssueDetails from '../IssueDetails/IssueDetails';
+import Issues from '../Issues';
+import {NavigationHeaderItem} from '../../components';
+import {Issue} from '../../api/issues/types';
 
 export type NavigationParamList = {
   Home: {};

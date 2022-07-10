@@ -12,8 +12,8 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import useBookmark from '../hooks/useBookmark';
-import {Issue, Filter} from '../reducers/issuesReducer';
+import {Filter, Issue} from '../api/issues/types';
+import useBookmark from '../screens/Bookmarks/hooks/useBookmark';
 
 const issueIcons = {
   open: {
@@ -158,7 +158,7 @@ const IssueItem: FunctionComponent<{
   const theme = useTheme();
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
-  const [isBookmarked, setBookmark] = useBookmark(issue);
+  const {isBookmarked, setBookmark} = useBookmark(issue);
 
   return (
     <TouchableOpacity

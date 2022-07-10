@@ -1,4 +1,6 @@
-import {Issue} from '../src/reducers/issuesReducer';
+import {Issue} from '../types';
+import nock from 'nock';
+const BASE_URL = 'https://api.github.com:443';
 
 export const mockIssue1: Issue = {
   number: 1,
@@ -53,6 +55,12 @@ export const mockGetIssueParams = {
   issueNumber: 33384,
 };
 
+export const mockGetIssueBadParams = {
+  repo: 'react-native123131634',
+  org: 'facebook',
+  issueNumber: -59656,
+};
+
 export const mockReturnCodes = {
   success: 200,
   notFound: 404,
@@ -65,3 +73,25 @@ export const notFoundResponse = {
   documentation_url:
     'https://docs.github.com/rest/reference/issues#list-repository-issues',
 };
+
+export function mockGetIssues(
+  path: string,
+  query: Record<string, any>,
+  responseBody: Record<string, any>,
+  statusCode: number,
+) {
+  nock(BASE_URL, {encodedQueryParams: true})
+    .get(path)
+    .query(query)
+    .reply(statusCode, responseBody);
+}
+
+export function mockGetIssue(
+  path: string,
+  responseBody: Record<string, any>,
+  statusCode: number,
+) {
+  nock(BASE_URL, {encodedQueryParams: true})
+    .get(path)
+    .reply(statusCode, responseBody);
+}

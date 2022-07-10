@@ -14,7 +14,7 @@ module.exports = {
   preset: 'react-native',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFiles: ['./__tests__/setup.js'],
-  // collectCoverageFrom: ['<rootDir>/__tests__'],
+  collectCoverageFrom: ['<rootDir>/**/*.{ts,tsx}'],
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: getCoverageReporters(),

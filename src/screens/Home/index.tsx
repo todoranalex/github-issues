@@ -9,12 +9,12 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import {Button, Input} from './Generic';
+import {Button, Input} from '../../components';
 
 /***
  * Component used as the main entry point for the app.
  */
-export default () => {
+const Home = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
@@ -86,6 +86,8 @@ export default () => {
     </ScrollView>
   );
 };
+
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
