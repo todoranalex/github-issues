@@ -1,20 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {StoreContext} from '../../../../App';
 import {IssueList} from '../../../issues/components';
-import useBookmarks from '../../hooks/useBookmarks';
 
-/***
- * Component used to display the list of issues that were bookmarked.
- */
 export default () => {
-  const bookmarks = useBookmarks();
+  const {bookmarksReducer} = useContext(StoreContext);
+  const {bookmarks, loading} = bookmarksReducer;
   return (
     <View style={styles.container}>
-      <IssueList
-        issues={bookmarks}
-        isLoading={bookmarks.length === 0}
-        error={undefined}
-      />
+      <IssueList issues={bookmarks} isLoading={loading} error={undefined} />
     </View>
   );
 };

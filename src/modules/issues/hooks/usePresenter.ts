@@ -1,8 +1,8 @@
 import {RouteProp, useTheme, useRoute} from '@react-navigation/native';
 import {useReducer, useEffect} from 'react';
 import issuesReducer, {initialState} from '../reducers/issuesReducer';
-import {NavigationParamList} from '../../../App';
 import getIssues from '../api/getIssues';
+import {NavigationParamList} from '../../navigation';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
 

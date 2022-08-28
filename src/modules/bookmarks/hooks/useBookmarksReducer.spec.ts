@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {mockIssue1, mockIssue3} from '../../issues/mocks';
 import {getBookmarks} from '../tasks';
-import useBookmarks from './useBookmarks';
+import useBookmarks from './useBookmarksReducer';
 
-jest.mock('../tasks')
+jest.mock('../tasks');
 
 describe('#useBookmarks', () => {
   const getBookmarksMock = getBookmarks as jest.Mock;

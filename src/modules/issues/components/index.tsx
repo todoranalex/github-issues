@@ -1,10 +1,9 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {FunctionComponent} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,8 +11,9 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import useBookmark from '../../bookmarks/hooks/useBookmark';
+import {StoreContext} from '../../../App';
 import {IssueFilter, Issue} from '../types';
+import styles from './styles';
 
 const issueIcons = {
   open: {
@@ -158,7 +158,18 @@ const IssueItem: FunctionComponent<{
   const theme = useTheme();
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
-  const {isBookmarked, setBookmark} = useBookmark(issue);
+
+  const {bookmarksReducer} = useContext(StoreContext);
+  const {bookmarks, addBookmark, removeBookmark} = bookmarksReducer;
+  const isBookmarked = bookmarks.find(b => b.number === issue.number);
+
+  const onBookmarkIconPress = () => {
+    if (isBookmarked) {
+      removeBookmark(issue);
+    } else {
+      addBookmark(issue);
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -231,9 +242,7 @@ const IssueItem: FunctionComponent<{
           name={isBookmarked ? 'heart-fill' : 'heart'}
           size={24}
           color={theme.colors.primary}
-          onPress={() => {
-            setBookmark();
-          }}
+          onPress={onBookmarkIconPress}
         />
       </View>
       <View style={{...styles.separator, width}} />
@@ -291,108 +300,3 @@ export const NavigationHeaderItem: FunctionComponent<{
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  emptyScreen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyScreenText: {marginTop: 8, color: 'white', alignSelf: 'center'},
-  organizationName: {
-    marginLeft: 24,
-    marginBottom: 8,
-  },
-  filtersContainer: {
-    flexDirection: 'row',
-    marginLeft: 24,
-  },
-  textInputInfo: {
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    height: 48,
-    marginBottom: 16,
-    paddingLeft: 8,
-  },
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    height: 48,
-    marginBottom: 8,
-  },
-  buttonInnerContainer: {flexDirection: 'row', paddingHorizontal: 48},
-  buttonText: {
-    fontSize: 20,
-    marginRight: 8,
-  },
-  issueItemContainer: {
-    paddingTop: 24,
-  },
-  issueItemInner: {
-    paddingHorizontal: 24,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  issueItemIcon: {
-    marginRight: 8,
-  },
-  issueItemHeaderText: {
-    marginBottom: 8,
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  issueItemTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  labelsContainer: {flexDirection: 'row', flexWrap: 'wrap', marginTop: 8},
-  label: {
-    borderRadius: 50,
-    marginRight: 4,
-    marginBottom: 4,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    alignSelf: 'baseline',
-  },
-  comment: {
-    flexDirection: 'row',
-    alignSelf: 'baseline',
-    alignItems: 'center',
-    borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    backgroundColor: '#212121',
-  },
-  separator: {
-    height: 1,
-    opacity: 0.3,
-    backgroundColor: 'gray',
-    marginTop: 24,
-  },
-  filterItem: {
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginRight: 8,
-    backgroundColor: '#778899',
-    flexDirection: 'row',
-  },
-  navHeaderContainer: {
-    marginLeft: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  navHeaderTitle: {
-    color: 'white',
-    marginLeft: 16,
-    fontSize: 20,
-    fontWeight: '700',
-  },
-});
