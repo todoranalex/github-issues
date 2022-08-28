@@ -10,12 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@octokit/rest": "^18.12.0",
-    "@react-native-community/async-storage": "^1.5.0",
+    "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
-    "octokit": "^1.7.1",
     "react": "17.0.2",
     "react-native": "0.67.4",
     "react-native-safe-area-context": "^4.2.1",
@@ -37,7 +35,6 @@
     "eslint": "7.14.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
-    "nock": "^13.2.4",
     "react-test-renderer": "17.0.2",
     "typescript": "^4.6.2"
   },

@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import {Issue} from '../../modules/issues/types';
+import {Issue} from '../../issues/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BOOKMARKS_KEY = 'BookmarksKey';
 

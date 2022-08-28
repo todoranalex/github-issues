@@ -1,4 +1,4 @@
-import {Issue, Filter} from '../types';
+import {Issue, IssueFilter} from '../types';
 
 export const initialState: State = {
   issues: [],
@@ -7,7 +7,7 @@ export const initialState: State = {
   filter: 'open',
   filters: ['open', 'closed', 'all'],
   page: 1,
-  issuesPerPage: 50,
+  issuesPerPage: 20,
   isLoading: true,
   error: undefined,
 };
@@ -16,8 +16,8 @@ type State = {
   issues: Issue[];
   org: string;
   repo: string;
-  filter: Filter;
-  filters: Filter[];
+  filter: IssueFilter;
+  filters: IssueFilter[];
   issuesPerPage: number;
   page: number;
   isLoading: boolean;
@@ -31,7 +31,7 @@ type Action =
   | {
       type: 'filter';
       payload: {
-        filter: Filter;
+        filter: IssueFilter;
       };
     }
   | {

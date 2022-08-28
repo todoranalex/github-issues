@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
 import useBookmark from '../../bookmarks/hooks/useBookmark';
-import {Filter, Issue} from '../types';
+import {IssueFilter, Issue} from '../types';
 
 const issueIcons = {
   open: {
@@ -250,7 +250,7 @@ export const MemorizedIssueItem = React.memo(
  * Component used to display the available filters that can be applied to the issues list
  */
 export const FilterItem: FunctionComponent<{
-  value: Filter;
+  value: IssueFilter;
   isActive: boolean;
   onActivate(): void;
 }> = ({value, isActive, onActivate}) => {
