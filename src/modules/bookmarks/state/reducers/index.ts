@@ -1,3 +1,4 @@
+import {Dispatch} from 'react';
 import {Issue} from '../../../issues/types';
 
 export const initialState: State = {
@@ -39,6 +40,10 @@ export type Action =
       };
     };
 
+export type BookmarksDispatch = (
+  action: Action | ((dispatch: Dispatch<Action>) => void),
+) => void;
+
 export type BookmarksReducer = (state: State, action: Action) => State;
 
 const bookmarksReducer: BookmarksReducer = (
@@ -56,13 +61,13 @@ const bookmarksReducer: BookmarksReducer = (
     }
     case 'add-bookmark-success': {
       return {
-        ...state,
+        loading: false,
         bookmarks: [...state.bookmarks, action.payload.bookmark],
       };
     }
     case 'remove-bookmark-success': {
       return {
-        ...state,
+        loading: false,
         bookmarks: [
           ...state.bookmarks.filter(
             x => x.number !== action.payload.bookmark.number,

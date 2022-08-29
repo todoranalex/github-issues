@@ -8,23 +8,13 @@ import styles from './styles';
 /***
  * Component used to display the list of issues from Github. It also always filtering & pagination by dispatching the appropiate actions to the reducer.
  */
-export default () => {
-  const {
-    organization,
-    theme,
-    filters,
-    filter,
-    isLoadingMore,
-    isLoading,
-    error,
-    issues,
-    dispatch,
-  } = usePresenter();
-
+const Issues = () => {
+  const {state, theme, isLoadingMore, thunkDispatch} = usePresenter();
+  const {org, filters, filter, issues, page, isLoading, error} = state;
   return (
     <React.Fragment>
       <Text style={{...styles.organizationName, color: theme.colors.text}}>
-        {organization}
+        {org}
       </Text>
       <View style={styles.filtersContainer}>
         {filters.map(value => {
@@ -33,12 +23,7 @@ export default () => {
               key={value}
               value={value}
               onActivate={() => {
-                dispatch({
-                  type: 'filter',
-                  payload: {
-                    filter: value,
-                  },
-                });
+                thunkDispatch({type: 'set-filter', payload: {filter: value}});
               }}
               isActive={value === filter}
             />
@@ -55,8 +40,11 @@ export default () => {
       ) : (
         <IssueList
           onLoadMore={() => {
-            dispatch({
-              type: 'fetch-next-page',
+            thunkDispatch({
+              type: 'set-page',
+              payload: {
+                page: page + 1,
+              },
             });
           }}
           issues={issues}
@@ -67,3 +55,5 @@ export default () => {
     </React.Fragment>
   );
 };
+
+export default Issues;

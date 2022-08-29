@@ -1,5 +1,5 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Alert,
   ScrollView,
@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
+import {StoreContext} from '../../generic/store';
 import {Button, Input} from '../../issues/components';
 
 /***
@@ -25,6 +26,9 @@ const Home = () => {
     repository: '',
     organization: '',
   });
+
+  const {issuesThunkReducer} = useContext(StoreContext);
+  const [, thunkDispatch] = issuesThunkReducer;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -62,10 +66,25 @@ const Home = () => {
           onPress={() => {
             const {repository, organization} = githubDetails;
             if (repository.length > 0 && organization.length > 0) {
-              navigation.navigate('Issues', {
-                organization: organization.toLowerCase(),
-                repository: repository.toLowerCase(),
+              thunkDispatch({
+                type: 'set-repo',
+                payload: {
+                  repo: githubDetails.repository,
+                },
               });
+              thunkDispatch({
+                type: 'set-org',
+                payload: {
+                  org: githubDetails.organization,
+                },
+              });
+              thunkDispatch({
+                type: 'set-filter',
+                payload: {
+                  filter: 'open',
+                },
+              });
+              navigation.navigate('Issues', {});
             } else {
               Alert.alert(
                 'Error',

@@ -20,10 +20,7 @@ declare global {
 
 export type NavigationParamList = {
   Home: {};
-  Issues: {
-    organization: string;
-    repository: string;
-  };
+  Issues: {};
   IssueDetails: {
     issue: Issue;
   };

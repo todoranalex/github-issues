@@ -6,8 +6,8 @@ export const mockIssue1: Issue = {
   state: 'open',
   labels: [],
   updated_at: '10',
-  repo: 'repo1',
-  org: 'org1',
+  repo: 'some-repo',
+  org: 'some-org',
   comments_url: '',
   comments: 0,
 };
@@ -17,8 +17,8 @@ export const mockIssue2: Issue = {
   state: 'open',
   labels: [],
   updated_at: '10',
-  repo: 'repo2',
-  org: 'org2',
+  repo: 'some-repo',
+  org: 'some-org',
   comments_url: '',
   comments: 0,
 };
@@ -28,15 +28,15 @@ export const mockIssue3: Issue = {
   state: 'open',
   labels: [],
   updated_at: '10',
-  repo: 'repo3',
-  org: 'org3',
+  repo: 'some-repo',
+  org: 'some-org',
   comments_url: '',
   comments: 0,
 };
 
 export const mockGetIssuesParams = {
-  repo: 'react-native',
-  org: 'facebook',
+  repo: 'some-repo',
+  org: 'some-org',
   per_page: 30,
   state: 'open',
   page: 1,

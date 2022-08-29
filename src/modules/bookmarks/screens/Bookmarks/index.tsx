@@ -1,14 +1,19 @@
 import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StoreContext} from '../../../../App';
+import {StoreContext} from '../../../generic/store';
 import {IssueList} from '../../../issues/components';
 
 export default () => {
-  const {bookmarksReducer} = useContext(StoreContext);
-  const {bookmarks, loading} = bookmarksReducer;
+  const {bookmarksThunkReducer} = useContext(StoreContext);
+
+  const [state] = bookmarksThunkReducer;
   return (
     <View style={styles.container}>
-      <IssueList issues={bookmarks} isLoading={loading} error={undefined} />
+      <IssueList
+        issues={state.bookmarks}
+        isLoading={state.loading}
+        error={undefined}
+      />
     </View>
   );
 };

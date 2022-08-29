@@ -11,7 +11,8 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import {StoreContext} from '../../../App';
+import {addBookmark, removeBookmark} from '../../bookmarks/state/actions';
+import {StoreContext} from '../../generic/store';
 import {IssueFilter, Issue} from '../types';
 import styles from './styles';
 
@@ -159,15 +160,16 @@ const IssueItem: FunctionComponent<{
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
 
-  const {bookmarksReducer} = useContext(StoreContext);
-  const {bookmarks, addBookmark, removeBookmark} = bookmarksReducer;
-  const isBookmarked = bookmarks.find(b => b.number === issue.number);
+  const {bookmarksThunkReducer} = useContext(StoreContext);
+  const [state, thunkDispatch] = bookmarksThunkReducer;
+
+  const isBookmarked = state.bookmarks.find(b => b.number === issue.number);
 
   const onBookmarkIconPress = () => {
     if (isBookmarked) {
-      removeBookmark(issue);
+      thunkDispatch(removeBookmark(issue));
     } else {
-      addBookmark(issue);
+      thunkDispatch(addBookmark(issue));
     }
   };
 
