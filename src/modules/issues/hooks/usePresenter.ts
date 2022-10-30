@@ -1,49 +1,29 @@
-import {RouteProp, useTheme, useRoute} from '@react-navigation/native';
-import {useReducer, useEffect} from 'react';
-import issuesReducer, {initialState} from '../reducers/issuesReducer';
-import {NavigationParamList} from '../../../App';
-import getIssues from '../api/getIssues';
-
-type IssuesRouteProps = RouteProp<NavigationParamList, 'Issues'>;
+import {useTheme} from '@react-navigation/native';
+import {useContext, useEffect} from 'react';
+import {StoreContext} from '../../generic/store';
+import {fetchIssues} from '../state/actions';
 
 const usePresenter = () => {
   const theme = useTheme();
-  const {organization, repository} = useRoute<IssuesRouteProps>().params;
-  const [state, dispatch] = useReducer(issuesReducer, {
-    ...initialState,
-    repo: repository,
-    org: organization,
-  });
-  const {org, repo, filter, page, issuesPerPage} = state;
+
+  const {issuesThunkReducer} = useContext(StoreContext);
+
+  const [state, thunkDispatch] = issuesThunkReducer;
+
+  const {page, filter, org, repo, issuesPerPage} = state;
 
   useEffect(() => {
-    const fetchIssues = async () => {
-      try {
-        const issues = await getIssues(repo, org, issuesPerPage, filter, page);
-        dispatch({
-          type: 'fetch-success',
-          payload: {
-            issues,
-          },
-        });
-      } catch (error) {
-        dispatch({
-          type: 'error',
-          payload: {
-            error,
-          },
-        });
-      }
+    const fetch = async () => {
+      thunkDispatch(fetchIssues(repo, org, issuesPerPage, filter, page));
     };
-    fetchIssues();
-  }, [state.page, state.filter]);
+    fetch();
+  }, [page, filter, org, repo, issuesPerPage, thunkDispatch]);
 
   return {
     theme,
-    organization,
-    ...state,
+    state,
     isLoadingMore: state.isLoading && state.page === 1,
-    dispatch,
+    thunkDispatch,
   };
 };
 

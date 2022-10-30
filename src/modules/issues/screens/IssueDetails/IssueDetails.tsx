@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import useIssue from '../../hooks/useIssue';
 import {NavigationParamList} from '../../../../App';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>;
@@ -18,7 +17,6 @@ type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>;
 export default () => {
   const {issue: defaultIssue} = useRoute<IssuesRouteProps>().params;
   const theme = useTheme();
-  const issue = useIssue(defaultIssue);
   return (
     <ScrollView style={{flex: 1}}>
       <Text style={{...styles.organizationName, color: theme.colors.text}}>
@@ -31,7 +29,7 @@ export default () => {
         }}>
         {defaultIssue.title}
       </Text>
-      {!issue ? (
+      {!defaultIssue ? (
         <ActivityIndicator
           size={24}
           color={theme.colors.primary}
@@ -43,7 +41,7 @@ export default () => {
         />
       ) : (
         <View style={{padding: 24}}>
-          {issue.labels?.map(l => {
+          {defaultIssue.labels?.map(l => {
             return (
               <Text
                 key={l.id}
@@ -53,29 +51,10 @@ export default () => {
             );
           })}
           <Text style={{color: theme.colors.primary, ...styles.text}}>
-            {issue.state}
+            {defaultIssue.state}
           </Text>
           <Text style={{color: theme.colors.primary, ...styles.text}}>
-            {issue.updated_at}
-          </Text>
-          {issue.assignee?.name && (
-            <Text style={{color: theme.colors.primary, ...styles.text}}>
-              {issue.assignee?.name}
-            </Text>
-          )}
-          {issue.assignee?.avatarUrl && (
-            <Text style={{color: theme.colors.primary, ...styles.text}}>
-              {issue.assignee?.avatarUrl}
-            </Text>
-          )}
-          <Text style={{color: theme.colors.primary, ...styles.text}}>
-            {issue.repoUrl}
-          </Text>
-          <Text style={{color: theme.colors.primary, ...styles.text}}>
-            {issue.labelsUrl}
-          </Text>
-          <Text style={{color: theme.colors.primary, ...styles.text}}>
-            {issue.repoUrl}
+            {defaultIssue.updated_at}
           </Text>
         </View>
       )}
