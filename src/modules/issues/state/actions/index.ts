@@ -2,7 +2,6 @@ import getIssues from '../../api/getIssues';
 import {Action} from '../reducers/issuesReducer';
 import {IssueFilter} from '../../types';
 
-//Thunk - return function instead of action object
 export const fetchIssues =
   (
     repo: string,

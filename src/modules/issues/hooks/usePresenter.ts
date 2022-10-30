@@ -13,10 +13,7 @@ const usePresenter = () => {
   const {page, filter, org, repo, issuesPerPage} = state;
 
   useEffect(() => {
-    const fetch = async () => {
-      thunkDispatch(fetchIssues(repo, org, issuesPerPage, filter, page));
-    };
-    fetch();
+    thunkDispatch(fetchIssues(repo, org, issuesPerPage, filter, page));
   }, [page, filter, org, repo, issuesPerPage, thunkDispatch]);
 
   return {
