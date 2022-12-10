@@ -1,7 +1,7 @@
 import {useTheme} from '@react-navigation/native';
 import {useContext, useEffect} from 'react';
 import {StoreContext} from '../../generic/store';
-import {fetchIssues} from '../state/actions';
+import {fetchIssues, setFilter, setPage} from '../state/actions';
 import {IssueFilter} from '../types';
 
 const useIssues = () => {
@@ -17,21 +17,11 @@ const useIssues = () => {
   }, [page, filter, org, repo, issuesPerPage, thunkDispatch]);
 
   const onFilterActivated = (filter: IssueFilter) => {
-    thunkDispatch({
-      type: 'set-filter',
-      payload: {
-        filter,
-      },
-    });
+    thunkDispatch(setFilter(filter));
   };
 
   const onLoadMore = () => {
-    thunkDispatch({
-      type: 'set-page',
-      payload: {
-        page: page + 1,
-      },
-    });
+    thunkDispatch(setPage(page + 1));
   };
 
   return {

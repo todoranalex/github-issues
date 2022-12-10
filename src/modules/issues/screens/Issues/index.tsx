@@ -2,14 +2,14 @@ import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import {Text, View} from 'react-native';
 import {FilterItem, IssueList} from '../../components';
-import usePresenter from '../../hooks/useIssues';
+import useIssues from '../../hooks/useIssues';
 import styles from './styles';
 
 /***
  * Component used to display the list of issues from Github. It also always filtering & pagination by dispatching the appropiate actions to the reducer.
  */
 const Issues = () => {
-  const {state, theme, onFilterActivated, onLoadMore} = usePresenter();
+  const {state, theme, onFilterActivated, onLoadMore} = useIssues();
   const {org, filters, filter, issues, isLoading, error} = state;
   return (
     <React.Fragment>

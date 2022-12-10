@@ -5,7 +5,7 @@ import React, {createContext} from 'react';
 import {IssuesDispatch, IssuesReducer, IssuesState} from '../state';
 import Store, {StoreProvider} from '../../generic/store';
 import issuesReducer, {initialState} from '../state/reducers/issuesReducer';
-import {fetchIssues} from '../state/actions';
+import {fetchIssues, setFilter, setPage} from '../state/actions';
 import {mockIssue1, mockIssue2} from '../mocks';
 
 const thunkDispatch = jest.fn();
@@ -13,6 +13,8 @@ const thunkDispatch = jest.fn();
 jest.mock('../state/actions');
 
 const fetchIssuesMock = fetchIssues as jest.Mock;
+const setPageMock = setPage as jest.Mock;
+const setFilterMock = setFilter as jest.Mock;
 
 fetchIssuesMock.mockReturnValue([mockIssue1, mockIssue2]);
 
@@ -57,10 +59,7 @@ describe('#useIssues', () => {
 
     result.current.onFilterActivated('closed');
 
-    expect(thunkDispatch).toBeCalledWith({
-      type: 'set-filter',
-      payload: {filter: 'closed'},
-    });
+    expect(thunkDispatch).toBeCalledWith(setFilterMock('closed'));
   });
 
   it('should provide method to load more issues', () => {
@@ -70,11 +69,6 @@ describe('#useIssues', () => {
 
     result.current.onLoadMore();
 
-    expect(thunkDispatch).toBeCalledWith({
-      type: 'set-page',
-      payload: {
-        page: 2,
-      },
-    });
+    expect(thunkDispatch).toBeCalledWith(setPageMock(initialState.page + 1));
   });
 });
