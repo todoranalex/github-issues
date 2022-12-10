@@ -2,15 +2,15 @@ import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import {Text, View} from 'react-native';
 import {FilterItem, IssueList} from '../../components';
-import usePresenter from '../../hooks/usePresenter';
+import usePresenter from '../../hooks/useIssues';
 import styles from './styles';
 
 /***
  * Component used to display the list of issues from Github. It also always filtering & pagination by dispatching the appropiate actions to the reducer.
  */
 const Issues = () => {
-  const {state, theme, isLoadingMore, thunkDispatch} = usePresenter();
-  const {org, filters, filter, issues, page, isLoading, error} = state;
+  const {state, theme, onFilterActivated, onLoadMore} = usePresenter();
+  const {org, filters, filter, issues, isLoading, error} = state;
   return (
     <React.Fragment>
       <Text style={{...styles.organizationName, color: theme.colors.text}}>
@@ -22,15 +22,13 @@ const Issues = () => {
             <FilterItem
               key={value}
               value={value}
-              onActivate={() => {
-                thunkDispatch({type: 'set-filter', payload: {filter: value}});
-              }}
+              onActivate={() => onFilterActivated(value)}
               isActive={value === filter}
             />
           );
         })}
       </View>
-      {isLoadingMore ? (
+      {state.isLoading && state.page === 1 ? (
         <ActivityIndicator
           testID="loading"
           size={24}
@@ -39,14 +37,7 @@ const Issues = () => {
         />
       ) : (
         <IssueList
-          onLoadMore={() => {
-            thunkDispatch({
-              type: 'set-page',
-              payload: {
-                page: page + 1,
-              },
-            });
-          }}
+          onLoadMore={onLoadMore}
           issues={issues}
           isLoading={isLoading}
           error={error}

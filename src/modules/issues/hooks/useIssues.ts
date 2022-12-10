@@ -2,12 +2,12 @@ import {useTheme} from '@react-navigation/native';
 import {useContext, useEffect} from 'react';
 import {StoreContext} from '../../generic/store';
 import {fetchIssues} from '../state/actions';
+import {IssueFilter} from '../types';
 
-const usePresenter = () => {
+const useIssues = () => {
   const theme = useTheme();
 
   const {issuesThunkReducer} = useContext(StoreContext);
-
   const [state, thunkDispatch] = issuesThunkReducer;
 
   const {page, filter, org, repo, issuesPerPage} = state;
@@ -16,12 +16,31 @@ const usePresenter = () => {
     thunkDispatch(fetchIssues(repo, org, issuesPerPage, filter, page));
   }, [page, filter, org, repo, issuesPerPage, thunkDispatch]);
 
+  const onFilterActivated = (filter: IssueFilter) => {
+    thunkDispatch({
+      type: 'set-filter',
+      payload: {
+        filter,
+      },
+    });
+  };
+
+  const onLoadMore = () => {
+    thunkDispatch({
+      type: 'set-page',
+      payload: {
+        page: page + 1,
+      },
+    });
+  };
+
   return {
     theme,
     state,
-    isLoadingMore: state.isLoading && state.page === 1,
-    thunkDispatch,
+
+    onFilterActivated,
+    onLoadMore,
   };
 };
 
-export default usePresenter;
+export default useIssues;

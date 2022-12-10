@@ -14,7 +14,23 @@ type StoreContext = {
 
 export const StoreContext = createContext<StoreContext>({} as StoreContext);
 
-const Store = (props: any) => {
+export const StoreProvider = ({
+  bookmarksThunkReducer,
+  issuesThunkReducer,
+  children,
+}: {
+  bookmarksThunkReducer: BookmarksReducer;
+  issuesThunkReducer: IssuesReducer;
+  children: any;
+}) => {
+  return (
+    <StoreContext.Provider value={{bookmarksThunkReducer, issuesThunkReducer}}>
+      {children}
+    </StoreContext.Provider>
+  );
+};
+
+const Store = ({children}: {children: any}) => {
   const bookmarksThunkReducer = useThunkReducer(
     bookmarksReducer,
     bookmarksInitialState,
@@ -22,9 +38,11 @@ const Store = (props: any) => {
   const issuesThunkReducer = useThunkReducer(issuesReducer, issuesInitialState);
 
   return (
-    <StoreContext.Provider value={{bookmarksThunkReducer, issuesThunkReducer}}>
-      {props.children}
-    </StoreContext.Provider>
+    <StoreProvider
+      children={children}
+      issuesThunkReducer={issuesThunkReducer}
+      bookmarksThunkReducer={bookmarksThunkReducer}
+    />
   );
 };
 

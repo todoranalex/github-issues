@@ -7,6 +7,7 @@ export default () => {
   const {bookmarksThunkReducer} = useContext(StoreContext);
 
   const [state] = bookmarksThunkReducer;
+  
   return (
     <View style={styles.container}>
       <IssueList
