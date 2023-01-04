@@ -78,7 +78,7 @@ describe('#middlewares', () => {
       expect(state).toStrictEqual(initialState);
 
       act(async () => {
-        // Update state via action object
+        // Update state via action function
         thunkDispatch(funcAction('some-changed-value-via-func-action'));
 
         // State is updated

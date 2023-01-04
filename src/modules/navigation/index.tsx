@@ -6,7 +6,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import Bookmarks from '../bookmarks/screens';
-import Home from '../home/screens';
+import Home from '../home/screens/Home';
 import {Issue} from '../issues';
 import {NavigationHeaderItem} from '../generic/components';
 import IssueDetails from '../issues/screens/IssueDetails/IssueDetails';
