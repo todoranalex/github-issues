@@ -1,5 +1,5 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useContext} from 'react';
+import {useTheme} from '@react-navigation/native';
+import React from 'react';
 import {FunctionComponent} from 'react';
 import {
   ActivityIndicator,
@@ -10,10 +10,9 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import {addBookmark, removeBookmark} from '../../bookmarks/state/actions';
 import {Button} from '../../generic/components';
-import {StoreContext} from '../../generic/state/store';
 import {IssueFilter, Issue} from '../types';
+import useIssueItem from './hooks/useIssueItem';
 import styles from './styles';
 
 const issueIcons = {
@@ -95,27 +94,13 @@ const IssueItem: FunctionComponent<{
   issue: Issue;
 }> = ({issue}) => {
   const theme = useTheme();
-  const navigation = useNavigation();
   const {width} = useWindowDimensions();
 
-  const {bookmarksThunkReducer} = useContext(StoreContext);
-  const [state, thunkDispatch] = bookmarksThunkReducer;
-
-  const isBookmarked = state.bookmarks.find(b => b.number === issue.number);
-
-  const onBookmarkIconPress = () => {
-    if (isBookmarked) {
-      thunkDispatch(removeBookmark(issue));
-    } else {
-      thunkDispatch(addBookmark(issue));
-    }
-  };
+  const {isBookmarked, onBookmark, onPress} = useIssueItem(issue);
 
   return (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('IssueDetails', {issue});
-      }}
+      onPress={onPress}
       activeOpacity={0.84}
       key={`${issue.title} - ${issue.number}`}
       style={styles.issueItemContainer}>
@@ -182,7 +167,7 @@ const IssueItem: FunctionComponent<{
           name={isBookmarked ? 'heart-fill' : 'heart'}
           size={24}
           color={theme.colors.primary}
-          onPress={onBookmarkIconPress}
+          onPress={onBookmark}
         />
       </View>
       <View style={{...styles.separator, width}} />

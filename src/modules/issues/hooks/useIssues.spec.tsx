@@ -1,10 +1,9 @@
-import {useTheme} from '@react-navigation/native';
 import useIssues from './useIssues';
-import {renderHook, act} from '@testing-library/react-hooks';
-import React, {createContext} from 'react';
-import {IssuesDispatch, IssuesReducer, IssuesState} from '../state';
-import Store, {StoreProvider} from '../../generic/state/store';
-import issuesReducer, {initialState} from '../state/reducers/issuesReducer';
+import {renderHook} from '@testing-library/react-hooks';
+import React from 'react';
+import {IssuesReducer} from '../state';
+import {StoreProvider} from '../../generic/state/store';
+import {initialState} from '../state/reducers/issuesReducer';
 import {fetchIssues, setFilter, setPage} from '../state/actions';
 import {mockIssue1, mockIssue2} from '../mocks';
 
