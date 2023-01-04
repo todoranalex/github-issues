@@ -1,6 +1,6 @@
 import {Dispatch, Reducer, ReducerState, useMemo, useReducer} from 'react';
 
-function isFunction(f: any): f is Function {
+export function isFunction(f: any): f is Function {
   return typeof f === 'function';
 }
 
