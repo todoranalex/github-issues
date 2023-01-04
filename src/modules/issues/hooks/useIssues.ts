@@ -1,6 +1,6 @@
 import {useTheme} from '@react-navigation/native';
 import {useContext, useEffect} from 'react';
-import {StoreContext} from '../../generic/store';
+import {StoreContext} from '../../generic/state/store';
 import {fetchIssues, setFilter, setPage} from '../state/actions';
 import {IssueFilter} from '../types';
 

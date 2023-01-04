@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native';
 import GithubIcon from 'react-native-vector-icons/Octicons';
-import {StoreContext} from '../../generic/store';
-import {Button, Input} from '../../issues/components';
+import {Input, Button} from '../../generic/components';
+import {StoreContext} from '../../generic/state/store';
 
 /***
  * Component used as the main entry point for the app.

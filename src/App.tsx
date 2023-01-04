@@ -2,7 +2,7 @@ import {DefaultTheme} from '@react-navigation/native';
 import React from 'react';
 
 import Navigation from './modules/navigation';
-import Store from './modules/generic/store';
+import Store from './modules/generic/state/store';
 
 const AppTheme = {
   ...DefaultTheme,

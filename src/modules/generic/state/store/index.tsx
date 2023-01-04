@@ -3,8 +3,12 @@ import {
   bookmarksInitialState,
   bookmarksReducer,
   BookmarksReducer,
-} from '../../bookmarks';
-import {issuesInitialState, issuesReducer, IssuesReducer} from '../../issues';
+} from '../../../bookmarks';
+import {
+  issuesInitialState,
+  issuesReducer,
+  IssuesReducer,
+} from '../../../issues';
 import useThunkReducer from '../middlewares';
 
 type StoreContext = {

@@ -5,10 +5,10 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import Bookmarks from '../bookmarks/screens/Bookmarks';
+import Bookmarks from '../bookmarks/screens';
 import Home from '../home/screens';
 import {Issue} from '../issues';
-import {NavigationHeaderItem} from '../issues/components';
+import {NavigationHeaderItem} from '../generic/components';
 import IssueDetails from '../issues/screens/IssueDetails/IssueDetails';
 import Issues from '../issues/screens/Issues';
 

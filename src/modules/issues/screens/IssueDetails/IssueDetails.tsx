@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import {NavigationParamList} from '../../../../App';
+import {NavigationParamList} from '../../../navigation';
 
 type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>;
 
