@@ -20,7 +20,7 @@ Supports fetch, filters, pagination and bookmarks for github issues!
 ## 🪄 Tech stack
 - React Native
 - Typescript
-- Context & Reducer for state management
+- Context API & useReducer for state management
 - Custom Thunk Middleware with generic types
 - React Navigation
 - Testing Library
