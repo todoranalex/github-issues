@@ -6,6 +6,7 @@ import {mockIssue1, mockIssue2, mockIssue3} from '../../mocks';
 import useIssueItem from './useIssueItem';
 import React from 'react';
 import {addBookmark, removeBookmark} from '../../../bookmarks/state/actions';
+import {mockedNavigate} from '../../../../../__tests__/setup';
 
 jest.mock('../../../bookmarks/state/actions');
 
@@ -66,5 +67,7 @@ describe('#useIssueItem', () => {
     });
 
     result.current.onPress();
+
+    expect(mockedNavigate).toBeCalledWith('IssueDetails', {issue: mockIssue1});
   });
 });

@@ -2,19 +2,14 @@ import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/asy
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+export const mockedNavigate = jest.fn();
+
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
   return {
     ...actualNav,
     useNavigation: () => ({
-      navigate: jest.fn(),
-      dispatch: jest.fn(),
-    }),
-    useRoute: () => ({
-      params: {
-        organization: 'facebook',
-        repository: 'react-native',
-      },
+      navigate: mockedNavigate,
     }),
   };
 });
