@@ -1,16 +1,31 @@
 # github-issues
 
-react-native-github-issues
+GitHub Issue Tracker
 
 https://user-images.githubusercontent.com/37213839/159453474-5a469758-405f-469e-b5b8-ceff2d41d9d7.mp4
 
-## Features
+Supports fetch, filters, pagination and bookmarks for github issues!
 
-- Fetch github issues for a given public organization and repository
-- Allow issues filtering by state - open, closed or all 
-- Paginate the issues list 
-- Bookmark an issue 
-- Display bookmarked issues separately 
+
+
+## ⚡ Highlights 
+
+- Pure (Context + Reducer) React Native app
+- Modular design
+- Clean Architecture with unidirectional data flow with separation between state / view
+- Reusable small (single responsability) functional components
+- Static & Generic types
+- 100% Test coverage
+
+## 🪄 Tech stack
+- React Native
+- Typescript
+- Context & Reducer for state management
+- Custom Thunk Middleware with generic types
+- React Navigation
+- Testing Library
+- Jest
+
 
 ## How to Setup
 
