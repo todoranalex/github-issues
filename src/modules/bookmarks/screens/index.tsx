@@ -1,24 +1,16 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StoreContext} from '../../generic/state/store';
 import {IssueList} from '../../issues/components';
-import {getBookmarks} from '../state/actions';
+import useBookmarks from '../hooks/useBookmarks';
 
 export default () => {
-  const {bookmarksThunkReducer} = useContext(StoreContext);
-
-  const [state, thunkDispatch] = bookmarksThunkReducer;
-
-  useEffect(() => {
-    thunkDispatch(getBookmarks());
-  }, [thunkDispatch]);
+  const {state} = useBookmarks();
 
   return (
     <View style={styles.container}>
       <IssueList
         issues={state.bookmarks}
         isLoading={state.loading}
-        error={undefined}
       />
     </View>
   );

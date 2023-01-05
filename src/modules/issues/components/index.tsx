@@ -32,7 +32,7 @@ const issueIcons = {
 export const IssueList: FunctionComponent<{
   issues: Issue[];
   isLoading: boolean;
-  error: any;
+  error?: any;
   onLoadMore?(): void;
 }> = ({issues, isLoading, error, onLoadMore}) => {
   const theme = useTheme();
