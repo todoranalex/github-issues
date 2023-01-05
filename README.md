@@ -12,7 +12,7 @@ Supports fetch, filters, pagination and bookmarks for github issues!
 
 - Pure (Context + Reducer) React Native app
 - Modular design
-- Clean Architecture with unidirectional data flow with separation between state / view
+- Clean Architecture with unidirectional data flow and separation between state / view
 - Reusable small (single responsability) functional components
 - Static & Generic types
 - 100% Test coverage
