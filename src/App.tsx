@@ -1,8 +1,8 @@
-import {DefaultTheme} from '@react-navigation/native';
-import React from 'react';
+import { DefaultTheme } from '@react-navigation/native'
+import React from 'react'
 
-import Navigation from './modules/navigation';
-import Store from './modules/generic/state/store';
+import Navigation from './modules/navigation'
+import Store from './modules/generic/state/store'
 
 const AppTheme = {
   ...DefaultTheme,
@@ -12,14 +12,14 @@ const AppTheme = {
     primary: 'white',
     text: '#999999',
   },
-};
+}
 
 const App = () => {
   return (
     <Store>
       <Navigation theme={AppTheme} />
     </Store>
-  );
-};
+  )
+}
 
-export default App;
+export default App

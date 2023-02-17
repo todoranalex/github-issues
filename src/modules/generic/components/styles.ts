@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  emptyScreenText: {marginTop: 8, color: 'white', alignSelf: 'center'},
+  emptyScreenText: { marginTop: 8, color: 'white', alignSelf: 'center' },
   textInputInfo: {
     marginBottom: 8,
   },
@@ -26,7 +26,7 @@ export default StyleSheet.create({
     height: 48,
     marginBottom: 8,
   },
-  buttonInnerContainer: {flexDirection: 'row', paddingHorizontal: 48},
+  buttonInnerContainer: { flexDirection: 'row', paddingHorizontal: 48 },
   buttonText: {
     fontSize: 20,
     marginRight: 8,
@@ -48,4 +48,4 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
   },
-});
+})

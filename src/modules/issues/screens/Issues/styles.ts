@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  emptyScreenText: {marginTop: 8, color: 'white', alignSelf: 'center'},
+  emptyScreenText: { marginTop: 8, color: 'white', alignSelf: 'center' },
   organizationName: {
     marginLeft: 24,
     marginVertical: 8,
@@ -18,4 +18,4 @@ export default StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 24,
   },
-});
+})

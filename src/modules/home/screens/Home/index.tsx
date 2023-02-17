@@ -1,22 +1,16 @@
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import GithubIcon from 'react-native-vector-icons/Octicons';
-import {Input, Button} from '../../../generic/components';
-import useHome from '../../hooks/useHome';
+import { useTheme } from '@react-navigation/native'
+import React from 'react'
+import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native'
+import GithubIcon from 'react-native-vector-icons/Octicons'
+import { Input, Button } from '../../../generic/components'
+import useHome from '../../hooks/useHome'
 
 /***
  * Component used as the main entry point for the app.
  */
 const Home = () => {
-  const theme = useTheme();
-  const {width} = useWindowDimensions();
+  const theme = useTheme()
+  const { width } = useWindowDimensions()
 
   const {
     githubDetails,
@@ -24,15 +18,15 @@ const Home = () => {
     onRepositoryChange,
     onFetchIssuesPressed,
     onBookmarksPressed,
-  } = useHome();
+  } = useHome()
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <GithubIcon name="mark-github" color={theme.colors.primary} size={128} />
-      <Text style={{color: theme.colors.primary, ...styles.subtitle}}>
+      <Text style={{ color: theme.colors.primary, ...styles.subtitle }}>
         Your GitHub issues fetcher app
       </Text>
-      <View style={{width: width - 128}}>
+      <View style={{ width: width - 128 }}>
         <Input
           testID={'orgInputTestID'}
           label={'Organization'}
@@ -61,10 +55,10 @@ const Home = () => {
         />
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
 
 const styles = StyleSheet.create({
   container: {
@@ -76,4 +70,4 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 16,
   },
-});
+})

@@ -1,5 +1,5 @@
-import {Dispatch} from 'react';
-import {Issue, IssueFilter} from '../../types';
+import { Dispatch } from 'react'
+import { Issue, IssueFilter } from '../../types'
 
 export const initialState: State = {
   issues: [],
@@ -11,64 +11,62 @@ export const initialState: State = {
   issuesPerPage: 20,
   isLoading: true,
   error: undefined,
-};
+}
 
 export type State = {
-  issues: Issue[];
-  org: string;
-  repo: string;
-  filter: IssueFilter;
-  filters: IssueFilter[];
-  issuesPerPage: number;
-  page: number;
-  isLoading: boolean;
-  error: any;
-};
+  issues: Issue[]
+  org: string
+  repo: string
+  filter: IssueFilter
+  filters: IssueFilter[]
+  issuesPerPage: number
+  page: number
+  isLoading: boolean
+  error: any
+}
 
-export type IssuesDispatch = (
-  action: Action | ((dispatch: Dispatch<Action>) => void),
-) => void;
+export type IssuesDispatch = (action: Action | ((dispatch: Dispatch<Action>) => void)) => void
 
 export type Action =
   | {
-      type: 'fetch-issues';
+      type: 'fetch-issues'
     }
   | {
-      type: 'fetch-success';
+      type: 'fetch-success'
       payload: {
-        issues: Issue[];
-      };
+        issues: Issue[]
+      }
     }
   | {
-      type: 'fetch-error';
+      type: 'fetch-error'
       payload: {
-        error: any;
-      };
+        error: any
+      }
     }
   | {
-      type: 'set-page';
+      type: 'set-page'
       payload: {
-        page: number;
-      };
+        page: number
+      }
     }
   | {
-      type: 'set-repo';
+      type: 'set-repo'
       payload: {
-        repo: string;
-      };
+        repo: string
+      }
     }
   | {
-      type: 'set-org';
+      type: 'set-org'
       payload: {
-        org: string;
-      };
+        org: string
+      }
     }
   | {
-      type: 'set-filter';
+      type: 'set-filter'
       payload: {
-        filter: IssueFilter;
-      };
-    };
+        filter: IssueFilter
+      }
+    }
 
 /***
  * Reducer used to handle the state of the Github issues.
@@ -79,7 +77,7 @@ const issuesReducer = (state: State, action: Action): State => {
       return {
         ...state,
         isLoading: true,
-      };
+      }
     }
     case 'fetch-success': {
       return {
@@ -87,28 +85,28 @@ const issuesReducer = (state: State, action: Action): State => {
         isLoading: false,
         error: undefined,
         issues: [...state.issues, ...action.payload.issues],
-      };
+      }
     }
     case 'fetch-error': {
       return {
         ...state,
         isLoading: false,
         error: action.payload.error,
-      };
+      }
     }
     case 'set-page': {
-      return {...state, page: action.payload.page};
+      return { ...state, page: action.payload.page }
     }
     case 'set-repo': {
-      return {...state, repo: action.payload.repo};
+      return { ...state, repo: action.payload.repo }
     }
     case 'set-org': {
-      return {...state, org: action.payload.org};
+      return { ...state, org: action.payload.org }
     }
     case 'set-filter': {
-      return {...state, filter: action.payload.filter, page: 1, issues: []};
+      return { ...state, filter: action.payload.filter, page: 1, issues: [] }
     }
   }
-};
+}
 
-export default issuesReducer;
+export default issuesReducer

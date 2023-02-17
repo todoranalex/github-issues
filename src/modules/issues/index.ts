@@ -1,3 +1,3 @@
-export type {Issue} from './types';
+export type { Issue } from './types'
 
-export * from './state';
+export * from './state'

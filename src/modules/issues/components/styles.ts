@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  emptyScreenText: {marginTop: 8, color: 'white', alignSelf: 'center'},
+  emptyScreenText: { marginTop: 8, color: 'white', alignSelf: 'center' },
   organizationName: {
     marginLeft: 24,
     marginBottom: 8,
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  labelsContainer: {flexDirection: 'row', flexWrap: 'wrap', marginTop: 8},
+  labelsContainer: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
   label: {
     borderRadius: 50,
     marginRight: 4,
@@ -71,4 +71,4 @@ export default StyleSheet.create({
     backgroundColor: '#778899',
     flexDirection: 'row',
   },
-});
+})

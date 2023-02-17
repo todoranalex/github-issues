@@ -1,16 +1,12 @@
-import {
-  NavigationContainer,
-  Theme,
-  useNavigationContainerRef,
-} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
-import Bookmarks from '../bookmarks/screens';
-import Home from '../home/screens/Home';
-import {Issue} from '../issues';
-import {NavigationHeaderItem} from '../generic/components';
-import IssueDetails from '../issues/screens/IssueDetails/IssueDetails';
-import Issues from '../issues/screens/Issues';
+import { NavigationContainer, Theme, useNavigationContainerRef } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
+import Bookmarks from '../bookmarks/screens'
+import Home from '../home/screens/Home'
+import { Issue } from '../issues'
+import { NavigationHeaderItem } from '../generic/components'
+import IssueDetails from '../issues/screens/IssueDetails/IssueDetails'
+import Issues from '../issues/screens/Issues'
 
 declare global {
   namespace ReactNavigation {
@@ -19,21 +15,21 @@ declare global {
 }
 
 export type NavigationParamList = {
-  Home: {};
-  Issues: {};
+  Home: {}
+  Issues: {}
   IssueDetails: {
-    issue: Issue;
-  };
-  Bookmarks: {};
-};
+    issue: Issue
+  }
+  Bookmarks: {}
+}
 
 type NavigationProps = {
-  theme: Theme;
-};
+  theme: Theme
+}
 
-const Navigation = ({theme}: NavigationProps) => {
-  const Stack = createNativeStackNavigator<NavigationParamList>();
-  const navigationRef = useNavigationContainerRef();
+const Navigation = ({ theme }: NavigationProps) => {
+  const Stack = createNativeStackNavigator<NavigationParamList>()
+  const navigationRef = useNavigationContainerRef()
   return (
     <NavigationContainer theme={theme} ref={navigationRef}>
       <Stack.Navigator>
@@ -57,10 +53,10 @@ const Navigation = ({theme}: NavigationProps) => {
                 <NavigationHeaderItem
                   title={'Bookmarks'}
                   onPress={() => {
-                    navigationRef.goBack();
+                    navigationRef.goBack()
                   }}
                 />
-              );
+              )
             },
           }}
         />
@@ -78,10 +74,10 @@ const Navigation = ({theme}: NavigationProps) => {
                 <NavigationHeaderItem
                   title={'Issues'}
                   onPress={() => {
-                    navigationRef.goBack();
+                    navigationRef.goBack()
                   }}
                 />
-              );
+              )
             },
           }}
         />
@@ -97,16 +93,16 @@ const Navigation = ({theme}: NavigationProps) => {
               return (
                 <NavigationHeaderItem
                   onPress={() => {
-                    navigationRef.goBack();
+                    navigationRef.goBack()
                   }}
                 />
-              );
+              )
             },
           }}
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

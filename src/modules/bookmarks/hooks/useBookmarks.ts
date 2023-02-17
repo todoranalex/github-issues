@@ -1,16 +1,16 @@
-import {useContext, useEffect} from 'react';
-import {StoreContext} from '../../generic/state/store';
-import {getBookmarks} from '../state/actions';
+import { useContext, useEffect } from 'react'
+import { StoreContext } from '../../generic/state/store'
+import { getBookmarks } from '../state/actions'
 
 const useBookmarks = () => {
-  const {bookmarksThunkReducer} = useContext(StoreContext);
-  const [state, thunkDispatch] = bookmarksThunkReducer;
+  const { bookmarksThunkReducer } = useContext(StoreContext)
+  const [state, thunkDispatch] = bookmarksThunkReducer
 
   useEffect(() => {
-    thunkDispatch(getBookmarks());
-  }, [thunkDispatch]);
+    thunkDispatch(getBookmarks())
+  }, [thunkDispatch])
 
-  return {state};
-};
+  return { state }
+}
 
-export default useBookmarks;
+export default useBookmarks

@@ -1,17 +1,17 @@
-import {mockIssue1, mockIssue2, mockIssue3} from '../../mocks';
-import issuesReducer, {initialState} from './issuesReducer';
+import { mockIssue1, mockIssue2, mockIssue3 } from '../../mocks'
+import issuesReducer, { initialState } from './issuesReducer'
 
 describe('#issuesReducer', () => {
   it('should handle fetch issues', () => {
     expect(
       issuesReducer(initialState, {
         type: 'fetch-issues',
-      }),
+      })
     ).toEqual({
       ...initialState,
       isLoading: true,
-    });
-  });
+    })
+  })
 
   it('should handle fetch success', () => {
     expect(
@@ -20,13 +20,13 @@ describe('#issuesReducer', () => {
         payload: {
           issues: [mockIssue1, mockIssue2, mockIssue3],
         },
-      }),
+      })
     ).toEqual({
       ...initialState,
       isLoading: false,
       issues: [mockIssue1, mockIssue2, mockIssue3],
-    });
-  });
+    })
+  })
 
   it('should handle fetch error', () => {
     expect(
@@ -35,13 +35,13 @@ describe('#issuesReducer', () => {
         payload: {
           error: 'Boom!',
         },
-      }),
+      })
     ).toEqual({
       ...initialState,
       isLoading: false,
       error: 'Boom!',
-    });
-  });
+    })
+  })
 
   it('should handle set page', () => {
     expect(
@@ -50,12 +50,12 @@ describe('#issuesReducer', () => {
         payload: {
           page: 4,
         },
-      }),
+      })
     ).toEqual({
       ...initialState,
       page: 4,
-    });
-  });
+    })
+  })
 
   it('should handle set repo', () => {
     expect(
@@ -64,12 +64,12 @@ describe('#issuesReducer', () => {
         payload: {
           repo: 'some-repo',
         },
-      }),
+      })
     ).toEqual({
       ...initialState,
       repo: 'some-repo',
-    });
-  });
+    })
+  })
 
   it('should handle set org', () => {
     expect(
@@ -78,12 +78,12 @@ describe('#issuesReducer', () => {
         payload: {
           org: 'some-org',
         },
-      }),
+      })
     ).toEqual({
       ...initialState,
       org: 'some-org',
-    });
-  });
+    })
+  })
 
   it('should handle set filter', () => {
     expect(
@@ -92,10 +92,10 @@ describe('#issuesReducer', () => {
         payload: {
           filter: 'closed',
         },
-      }),
+      })
     ).toEqual({
       ...initialState,
       filter: 'closed',
-    });
-  });
-});
+    })
+  })
+})

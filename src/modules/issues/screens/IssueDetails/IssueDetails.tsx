@@ -1,32 +1,27 @@
-import {RouteProp, useRoute, useTheme} from '@react-navigation/native';
-import React from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {NavigationParamList} from '../../../navigation';
+import { RouteProp, useRoute, useTheme } from '@react-navigation/native'
+import React from 'react'
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { NavigationParamList } from '../../../navigation'
 
-type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>;
+type IssuesRouteProps = RouteProp<NavigationParamList, 'IssueDetails'>
 
 /***
  * Component used to display all the details for an individual issue. Disclaimer: Design not yet finished
  */
 export default () => {
-  const {issue: defaultIssue} = useRoute<IssuesRouteProps>().params;
-  const theme = useTheme();
+  const { issue: defaultIssue } = useRoute<IssuesRouteProps>().params
+  const theme = useTheme()
   return (
-    <ScrollView style={{flex: 1}}>
-      <Text style={{...styles.organizationName, color: theme.colors.text}}>
+    <ScrollView style={{ flex: 1 }}>
+      <Text style={{ ...styles.organizationName, color: theme.colors.text }}>
         {`${defaultIssue.org} / ${defaultIssue.repo} #${defaultIssue.number}`}
       </Text>
       <Text
         style={{
           ...styles.title,
           color: theme.colors.primary,
-        }}>
+        }}
+      >
         {defaultIssue.title}
       </Text>
       {!defaultIssue ? (
@@ -40,27 +35,23 @@ export default () => {
           }}
         />
       ) : (
-        <View style={{padding: 24}}>
+        <View style={{ padding: 24 }}>
           {defaultIssue.labels?.map(l => {
             return (
-              <Text
-                key={l.id}
-                style={{color: theme.colors.primary, ...styles.text}}>
+              <Text key={l.id} style={{ color: theme.colors.primary, ...styles.text }}>
                 {l?.name}
               </Text>
-            );
+            )
           })}
-          <Text style={{color: theme.colors.primary, ...styles.text}}>
-            {defaultIssue.state}
-          </Text>
-          <Text style={{color: theme.colors.primary, ...styles.text}}>
+          <Text style={{ color: theme.colors.primary, ...styles.text }}>{defaultIssue.state}</Text>
+          <Text style={{ color: theme.colors.primary, ...styles.text }}>
             {defaultIssue.updated_at}
           </Text>
         </View>
       )}
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   organizationName: {
@@ -77,4 +68,4 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 16,
   },
-});
+})
